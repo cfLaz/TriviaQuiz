@@ -1,0 +1,10 @@
+.questionBox {
+    position: relative;
+    top: 10%;
+    left: 30%;
+    background-color: black;
+    width: 40%;
+    height: 40%;
+    border: 6px double $color-accent;
+    border-radius: 25px;
+}

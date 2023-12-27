@@ -1,7 +1,11 @@
-import './index.scss'
+import QuestionBox from './components/QuestionBox'
 
 function App() {
-   return <div className='App'>aa</div>
+   return (
+      <div className='App'>
+         <QuestionBox />
+      </div>
+   )
 }
 
 export default App
