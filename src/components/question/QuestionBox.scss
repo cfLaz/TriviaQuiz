@@ -1,0 +1,10 @@
+.questionBox {
+    // width: 40%;
+    // min-width: 400px;
+    // height: 40%;
+    // min-height: 250px;
+    // background-color: black;
+    grid-area: row-line-start / col-line-3 / row-line-middle / col-line-4;
+    border: 6px double $color-accent;
+    border-radius: 25px;
+}
