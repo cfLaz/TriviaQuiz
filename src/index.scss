@@ -3,17 +3,42 @@
 @import './components/index';
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+   height: 100vh;
+   width: 100vw;
+   position: relative;
+   margin: 0;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   scrollbar-color: $color-main-bg;
+   scrollbar-face-color: $color-accent;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+   height: 100%;
+   width: 100%;
+}
+::-webkit-scrollbar {
+   width: 6px;
+   height: 6px;
 }
 
-@import './App.scss'
+::-webkit-scrollbar-track {
+   background-color: rgba($color-main-bg, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+   background-color: $color-main-bg;
+   border: 0.5px solid $color-accent;
+   -webkit-border-radius: 18px;
+
+   &:hover {
+      background-color: rgba($color-main-bg, 0.5);
+   }
+}
+::-webkit-scrollbar-corner {
+   background: rgba($color-main-bg, 0.8);
+}
+@import './App.scss';

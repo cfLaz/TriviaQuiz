@@ -1,10 +1,13 @@
 .App {
+  position: relative;
   width: 100%;
   height: 100%;
   
   display: grid;
-  grid-template-columns: [col-line-1] minmax(80px,5%) [col-line-2] minmax(80px,10%) [col-line-3] minmax(600px, 70%) [col-line-4] minmax(80px,10%) [col-line-5] minmax(80px,5%) [col-line-6];
-  grid-template-rows: [row-line-start] minmax(400px, 60%) [row-line-middle] minmax(400px, 40%) [row-line-end];
+  grid-template-columns: [col-line-1] minmax(80px,5%) [col-line-2] minmax(80px,10%) [col-line-3] minmax(500px, 70%) [col-line-4] minmax(80px,10%) [col-line-5] minmax(80px,5%) [col-line-6];
+  grid-template-rows: [row-line-start] minmax(300px, 60%) [row-line-middle] minmax(300px, 40%) [row-line-end];
+  align-items: center;
+  justify-items: center;
   
   text-align: center;
   background-color: $color-main-bg;

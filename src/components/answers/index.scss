@@ -1,8 +1,9 @@
 .answersContainer {
-    // width: 80%;
-    // min-width: 600px;
-    // height: 40%;
-    // min-height: 400px;
+    width: 80%;
+    min-width: 500px;
+    height: 80%;
+    min-height: 250px;
+    margin: 2%;
     grid-area: row-line-middle / col-line-3 / row-line-end / col-line-4;
     background-color: black;
 }
