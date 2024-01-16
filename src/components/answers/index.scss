@@ -1,9 +1,21 @@
 .answersContainer {
+    grid-area: row-line-middle / col-line-3 / row-line-end / col-line-4;
     width: 80%;
     min-width: 500px;
-    height: 80%;
-    min-height: 250px;
+    height: 60%;
+    min-height: 200px;
+
     margin: 2%;
-    grid-area: row-line-middle / col-line-3 / row-line-end / col-line-4;
-    background-color: black;
+    padding: 8px;
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    grid-gap: 4px;
+    padding: 8px;
+    justify-items: center;
+    .answer {    
+        width: 90%;
+        height: 60px;
+        overflow: auto;
+    }
 }
+
