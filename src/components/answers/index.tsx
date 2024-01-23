@@ -1,5 +1,4 @@
 import { Classes } from '../../util/Classes'
-import { Question } from './model'
 import testData from './test'
 
 const AnswersContainer = () => {
@@ -12,12 +11,9 @@ const AnswersContainer = () => {
    return (
       <div className={Classes.answersContainer}>
          {answers.map((a, index) => (
-            <div
-               key={'q' + index}
-               style={{ backgroundColor: 'white' }}
-               className={Classes.answer}
-            >
-               {a}
+            <div key={'q' + index} className={Classes.answer}>
+               <div>{index + 1}</div>
+               <div>{a}</div>
             </div>
          ))}
       </div>
@@ -26,7 +22,6 @@ const AnswersContainer = () => {
 export default AnswersContainer
 
 function shuffleArrayElements(array: string[]): string[] {
-   debugger
    for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[array[i], array[j]] = [array[j], array[i]]

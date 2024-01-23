@@ -1,21 +1,51 @@
 .answersContainer {
-    grid-area: row-line-middle / col-line-3 / row-line-end / col-line-4;
-    width: 80%;
-    min-width: 500px;
-    height: 60%;
-    min-height: 200px;
+   grid-area: row-line-middle / col-line-3 / row-line-end / col-line-4;
+   width: 80%;
+   min-width: 500px;
+   height: 60%;
+   min-height: 200px;
 
-    margin: 2%;
-    padding: 8px;
-    display: grid;
-    grid-template: 1fr 1fr / 1fr 1fr;
-    grid-gap: 4px;
-    padding: 8px;
-    justify-items: center;
-    .answer {    
-        width: 90%;
-        height: 60px;
-        overflow: auto;
-    }
+   margin: 2%;
+   padding: 8px;
+   display: grid;
+   grid-template: 1fr 1fr / 1fr 1fr;
+   grid-gap: 4px;
+   padding: 8px;
+   justify-items: center;
+
+   
 }
 
+@mixin answer-child-style($width, $background-color) {
+   width: $width;
+   background-color: $background-color;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+$answer-width: 90%;
+$answer-height: 60px;
+
+.answer {
+   width: 90%;
+   height: 60px;
+   overflow: hidden;
+   display: flex;
+   border: 4px solid $color-accent;
+   border-radius: 10%/50%;
+   transition: all .2s ease-in-out;
+   font-size: $font-size-large;
+   
+   &:hover {
+      scale: 1.1;
+      cursor: pointer;
+    }
+   :first-child {
+      @include answer-child-style(20%, $color-accent);
+   }
+   :last-child {
+      @include answer-child-style(80%, $color-secondary);
+   }
+}
