@@ -7,6 +7,11 @@
    src: local('Roboto'), url(./assets/fonts/Roboto-Medium.ttf) format('truetype');
  }
 
+@font-face {
+   font-family: 'Roboto-Thin';
+   src: local('Roboto-Thin'), url(./assets/fonts/Roboto-Thin.ttf) format('truetype');
+ }
+
 body {
    height: 100vh;
    width: 100vw;
