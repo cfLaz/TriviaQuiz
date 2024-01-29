@@ -12,6 +12,11 @@
    src: local('Roboto-Thin'), url(./assets/fonts/Roboto-Thin.ttf) format('truetype');
  }
 
+@font-face {
+   font-family: 'Poppins';
+   src: local('Poppins'), url(./assets/fonts/Poppins-Medium.ttf) format('truetype');
+ }
+
 body {
    height: 100vh;
    width: 100vw;
