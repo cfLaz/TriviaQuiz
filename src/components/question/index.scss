@@ -4,8 +4,21 @@
     height: 80%;
     min-height: 250px;
     margin: 2%;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    font-family: 'Poppins';
     background-color: black;
     grid-area: row-line-start / col-line-3 / row-line-middle / col-line-4;
     border: 6px double $color-accent;
     border-radius: 25px;
+}
+
+.question {
+    overflow: auto;
+    padding: 5% 10%;
+    height: 100%;
+    line-height: 22px;
+    text-wrap: pretty;
+    font-size: $font-size-large;
 }

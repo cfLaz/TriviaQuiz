@@ -1,4 +1,18 @@
-export default {
+export const base64Encoded = {
+   response_code: 0,
+   results: [
+      {
+         type: 'bXVsdGlwbGU=',
+         difficulty: 'aGFyZA==',
+         category: 'U2NpZW5jZTogQ29tcHV0ZXJz',
+         question:
+            'TGVub3ZvIGFjcXVpcmVkIElCTSdzIHBlcnNvbmFsIGNvbXB1dGVyIGRpdmlzaW9uLCBpbmNsdWRpbmcgdGhlIFRoaW5rUGFkIGxpbmUgb2YgbGFwdG9wcyBhbmQgdGFibGV0cywgaW4gd2hhdCB5ZWFyPw==',
+         correct_answer: 'MjAwNQ==',
+         incorrect_answers: ['MTk5OQ==', 'MjAwMg==', 'MjAwOA=='],
+      },
+   ],
+}
+export const defaultEncoding = {
    response_code: 0,
    results: [
       {

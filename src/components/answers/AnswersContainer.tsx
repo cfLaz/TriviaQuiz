@@ -1,8 +1,8 @@
 import { Classes } from '../../util/Classes'
-import testData from './test'
-
+import { Answer } from './Answer'
+import { defaultEncoding } from '../../util/dummyData'
 const AnswersContainer = () => {
-   let question = testData.results[4]
+   let question = defaultEncoding.results[4]
    let answers = shuffleArrayElements([
       ...question.incorrect_answers,
       question.correct_answer,
@@ -11,10 +11,7 @@ const AnswersContainer = () => {
    return (
       <div className={Classes.answersContainer}>
          {answers.map((a, index) => (
-            <div key={'q' + index} className={Classes.answer}>
-               <div>{index + 1}</div>
-               <div>{a}</div>
-            </div>
+            <Answer num={index + 1} text={a} />
          ))}
       </div>
    )

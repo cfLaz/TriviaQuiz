@@ -1,4 +1,4 @@
-import AnswersContainer from './components/answers'
+import AnswersContainer from './components/answers/AnswersContainer'
 import QuestionBox from './components/question/QuestionBox'
 
 function App() {

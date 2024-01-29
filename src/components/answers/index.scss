@@ -13,7 +13,7 @@
    padding: 8px;
    justify-items: center;
 
-   
+   font-family: 'Poppins';
 }
 
 @mixin answer-child-style($width, $background-color) {
@@ -37,15 +37,16 @@ $answer-height: 60px;
    border-radius: 10%/50%;
    transition: all .2s ease-in-out;
    font-size: $font-size-large;
-   
+   color: #fff;
+
    &:hover {
       scale: 1.1;
       cursor: pointer;
-    }
+   }
    :first-child {
       @include answer-child-style(20%, $color-accent);
    }
    :last-child {
-      @include answer-child-style(80%, $color-secondary);
+      @include answer-child-style(80%, $color-primary);
    }
 }
