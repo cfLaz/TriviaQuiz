@@ -1,6 +1,7 @@
 import { Classes } from '../../util/Classes'
 import { Answer } from './Answer'
 import { defaultEncoding } from '../../util/dummyData'
+import { shuffleArrayElements } from '../../util/arrays'
 const AnswersContainer = () => {
    let question = defaultEncoding.results[4]
    let answers = shuffleArrayElements([
@@ -17,11 +18,3 @@ const AnswersContainer = () => {
    )
 }
 export default AnswersContainer
-
-function shuffleArrayElements(array: string[]): string[] {
-   for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[array[i], array[j]] = [array[j], array[i]]
-   }
-   return array
-}

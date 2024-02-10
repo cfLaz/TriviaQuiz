@@ -1,4 +1,4 @@
-export function decodeBase64InObject(obj: any): any {
+export function decodeBase64Object(obj: any): any {
    const decodedObject: any = {}
 
    for (const key in obj) {
@@ -10,10 +10,10 @@ export function decodeBase64InObject(obj: any): any {
          }
       } else if (Array.isArray(obj[key])) {
          decodedObject[key] = obj[key].map((item: any) =>
-            decodeBase64InObject(item)
+            decodeBase64Object(item)
          )
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-         decodedObject[key] = decodeBase64InObject(obj[key])
+         decodedObject[key] = decodeBase64Object(obj[key])
       } else {
          decodedObject[key] = obj[key]
       }
