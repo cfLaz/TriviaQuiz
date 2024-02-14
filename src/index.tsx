@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM, { createRoot } from 'react-dom/client'
-import App from './App'
+import App from './pages/quiz/Quiz'
 import reportWebVitals from './reportWebVitals'
 import './index.scss'
 import {

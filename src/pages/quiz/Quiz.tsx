@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { AnswerProvider } from './Contexts'
-import { getRandomQuestions } from './api/getQuestions'
-import AnswersContainer from './components/answers/AnswersContainer'
-import QuestionBox from './components/question/QuestionBox'
+import { AnswerProvider } from '../../Contexts'
+import { getRandomQuestions } from '../../api/getQuestions'
+import AnswersContainer from '../../components/answers/AnswersContainer'
+import QuestionBox from '../../components/question/QuestionBox'
 
 function App() {
    const [questions, setQuestions] = useState([])
