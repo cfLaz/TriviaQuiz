@@ -1,10 +1,13 @@
 export function decodeBase64Object(obj: any): any {
    const decodedObject: any = {}
+   if (typeof obj === 'string') {
+      return window.atob(obj)
+   }
 
    for (const key in obj) {
       if (typeof obj[key] === 'string') {
          try {
-            decodedObject[key] = atob(obj[key])
+            decodedObject[key] = window.atob(obj[key])
          } catch (error) {
             decodedObject[key] = obj[key]
          }
@@ -18,6 +21,6 @@ export function decodeBase64Object(obj: any): any {
          decodedObject[key] = obj[key]
       }
    }
-
+   
    return decodedObject
 }

@@ -10,5 +10,8 @@ export async function getRandomQuestions(difficulty: Difficulty, amount = 5) {
       difficulty: difficulty,
       amount: amount,
    })
-   return decodeBase64Object(response.data.results)
+   let results = response.data.results.map((question: any) =>
+      decodeBase64Object(question)
+   )
+   return results
 }
