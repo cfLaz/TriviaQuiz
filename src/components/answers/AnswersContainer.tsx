@@ -2,18 +2,25 @@ import { Classes } from '../../util/Classes'
 import { Answer } from './Answer'
 import { defaultEncoding } from '../../util/dummyData'
 import { shuffleArrayElements } from '../../util/arrays'
+import { useContext } from 'react'
+import { QandAContext } from '../../Contexts'
+import { isObjectEmpty } from '../../util/object'
+
 const AnswersContainer = () => {
-   let question = defaultEncoding.results[4]
-   let answers = shuffleArrayElements([
-      ...question.incorrect_answers,
-      question.correct_answer,
-   ])
+   const { currentQuestionData } = useContext(QandAContext)
+   let answers
+   if (!isObjectEmpty(currentQuestionData)) {
+      answers = shuffleArrayElements([
+         ...currentQuestionData.incorrect_answers,
+         currentQuestionData.correct_answer,
+      ])
+   }
 
    return (
       <div className={Classes.answersContainer}>
-         {answers.map((a, index) => (
-            <Answer num={index + 1} text={a} />
-         ))}
+         {answers
+            ? answers.map((a, index) => <Answer num={index + 1} text={a} />)
+            : 'Loading...'}
       </div>
    )
 }

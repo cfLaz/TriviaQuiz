@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM, { createRoot } from 'react-dom/client'
-import App from './pages/quiz/Quiz'
+import Quiz from './pages/quiz/Quiz'
 import reportWebVitals from './reportWebVitals'
 import './index.scss'
 import {
@@ -25,7 +25,7 @@ import { Home } from './pages/home'
 //             }
 //          >
 //          </Route>
-//          <Route path='/quiz' element={<App />} />
+//          <Route path='/quiz' element={<Quiz />} />
 //       </Route>
 //    )
 // )
@@ -36,7 +36,7 @@ const router = createBrowserRouter([
    },
    {
       path: '/quiz',
-      element: <App />,
+      element: <Quiz />,
    },
 ])
 
