@@ -1,5 +1,5 @@
 .questionBox {
-    width: 80%;
+    width: 90%;
     min-width: 400px;
     height: 80%;
     min-height: 250px;
@@ -8,7 +8,7 @@
     color: #fff;
     text-align: center;
     font-family: 'Poppins';
-    background-color: black;
+    background-color: rgba(black, 0.6);
     grid-area: row-line-start / col-line-3 / row-line-middle / col-line-4;
     border: 6px double $color-accent;
     border-radius: 25px;
