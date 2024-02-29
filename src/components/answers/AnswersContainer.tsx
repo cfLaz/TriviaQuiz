@@ -11,8 +11,8 @@ const AnswersContainer = () => {
    let answers
    if (!isObjectEmpty(currentQuestionData)) {
       answers = shuffleArrayElements([
-         ...currentQuestionData.incorrect_answers,
-         currentQuestionData.correct_answer,
+         ...currentQuestionData?.incorrect_answers,
+         currentQuestionData?.correct_answer,
       ])
    }
 

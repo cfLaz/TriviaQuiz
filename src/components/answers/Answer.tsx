@@ -1,6 +1,4 @@
-// CursorButton.tsx
-import React, { useContext, useState } from 'react'
-import { Classes } from '../../util/Classes'
+import { useContext } from 'react'
 import { QandAContext } from '../../Contexts'
 
 interface AnswerProps {
@@ -9,19 +7,27 @@ interface AnswerProps {
 }
 
 export const Answer = ({ num, text }: AnswerProps) => {
-   // const [userAnswer, setUserAnswer] = useState<string>('');
-   let { giveAnswer } = useContext(QandAContext)
+   let { giveAnswer, currentQuestionData } = useContext(QandAContext)
+
+   function answerQuestion(answerText: string) {
+      // currentQuestionData.correct_answer == answerText
+      //    ? onCorrectAnimate()
+      //    : onWrongAnimate()
+
+      giveAnswer(answerText)
+   }
 
    return (
       <>
-         <div
-            key={num}
-            className={Classes.answer}
-            onClick={() => giveAnswer(text)}
-         >
+         {/* <div id={'silverline' + num} className='silverline' /> */}
+         <div key={num} className='answer' onClick={() => answerQuestion(text)}>
             <div>{num}</div>
             <div>{text}</div>
          </div>
       </>
    )
+
+   function onCorrectAnimate() {}
 }
+
+function onWrongAnimate() {}

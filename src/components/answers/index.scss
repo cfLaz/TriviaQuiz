@@ -29,6 +29,7 @@ $answer-width: 90%;
 $answer-height: 60px;
 
 .answer {
+   position: relative;
    width: 90%;
    height: 60px;
    overflow: hidden;
@@ -50,3 +51,4 @@ $answer-height: 60px;
       @include answer-child-style(80%, $color-primary);
    }
 }
+
