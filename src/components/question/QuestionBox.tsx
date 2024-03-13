@@ -1,54 +1,59 @@
-import { useContext, useEffect, useState } from 'react'
+// QuestionBox.tsx
+
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { getRandomQuestions } from '../../api/getQuestions'
 import { Classes } from '../../util/Classes'
-import { QandAContext } from '../../Contexts'
+import {
+   QAValues,
+   setAllQuestionsData,
+   setCurrentQDataIndex,
+   setCurrentQuestionData,
+} from '../../store'
 
 const QuestionBox = () => {
-   let {
-      allQuestionsData,
-      setAllQuestionsData,
-      currentQuestionData,
-      setCurrentQuestionData,
-      userAnswer,
-   } = useContext(QandAContext)
+   const dispatch = useDispatch()
 
-   const [currentQDataIndex, setCurrentQDataIndex] = useState<number>(0)
-   const [isLoading, setIsLoading] = useState(true)
+   const allQuestionsData = useSelector(
+      (state: { QA: QAValues }) => state.QA.allQuestionsData
+   )
+   const currentQuestionData = useSelector(
+      (state: { QA: QAValues }) => state.QA.currentQuestionData
+   )
+   const userAnswer = useSelector(
+      (state: { QA: QAValues }) => state.QA.userAnswer
+   )
+   const currentQDataIndex = useSelector(
+      (state: { QA: QAValues }) => state.QA.currentQDataIndex
+   )
+
+   const isLoading = allQuestionsData.length === 0
 
    useEffect(() => {
       const fetchData = async () => {
          try {
             const questionsData = await getRandomQuestions('easy')
-            setAllQuestionsData(questionsData)
-
-            setCurrentQDataIndex(0)
-            setCurrentQuestionData(questionsData[0])
-            setIsLoading(false)
+            dispatch(setAllQuestionsData(questionsData))
+            dispatch(setCurrentQuestionData(questionsData[0]))
          } catch (error) {
             console.error('Error fetching data:', error)
-            setIsLoading(false)
          }
       }
 
       fetchData()
-   }, [])
+   }, [dispatch])
 
    useEffect(() => {
-      if (userAnswer == allQuestionsData[currentQDataIndex]?.correct_answer) {
-         setCurrentQDataIndex((prevIndex) => prevIndex + 1)
-         setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1])
+      if (userAnswer === allQuestionsData[currentQDataIndex]?.correct_answer) {
+         dispatch(
+            setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1])
+         )
+         dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       }
-   }, [userAnswer])
+   }, [userAnswer, dispatch])
 
    return (
-      <div
-         className={Classes.questionBox}
-         style={
-            {
-               // backgroundColor: userAnswer == 'Indiana Jones' ? 'green' : 'black',
-            }
-         }
-      >
+      <div className={Classes.questionBox}>
          <div className='question'>
             {isLoading ? 'Loading...' : currentQuestionData.question}
          </div>

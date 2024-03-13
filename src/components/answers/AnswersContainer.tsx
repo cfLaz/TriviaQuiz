@@ -1,13 +1,15 @@
+import { useSelector } from 'react-redux'
+import { QAValues } from '../../store'
 import { Classes } from '../../util/Classes'
-import { Answer } from './Answer'
-import { defaultEncoding } from '../../util/dummyData'
 import { shuffleArrayElements } from '../../util/arrays'
-import { useContext } from 'react'
-import { QandAContext } from '../../Contexts'
 import { isObjectEmpty } from '../../util/object'
+import { Answer } from './Answer'
 
 const AnswersContainer = () => {
-   const { currentQuestionData } = useContext(QandAContext)
+   const currentQuestionData = useSelector(
+      (state: { QA: QAValues }) => state.QA.currentQuestionData
+   )
+
    let answers
    if (!isObjectEmpty(currentQuestionData)) {
       answers = shuffleArrayElements([
@@ -24,4 +26,5 @@ const AnswersContainer = () => {
       </div>
    )
 }
+
 export default AnswersContainer

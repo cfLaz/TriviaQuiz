@@ -1,16 +1,12 @@
 import React from 'react';
-import ReactDOM, { createRoot } from 'react-dom/client'
-import Quiz from './pages/quiz/Quiz'
-import reportWebVitals from './reportWebVitals'
+import ReactDOM from 'react-dom/client'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.scss'
-import {
-   Link,
-   Route,
-   RouterProvider,
-   createBrowserRouter,
-   createRoutesFromElements,
-} from 'react-router-dom'
 import { Home } from './pages/home'
+import Quiz from './pages/quiz'
+import reportWebVitals from './reportWebVitals'
+import { Provider } from 'react-redux'
+import store from './store'
 
 // const router = createBrowserRouter(
 //    createRoutesFromElements(
@@ -43,7 +39,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
    <React.StrictMode>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+         <RouterProvider router={router} />
+      </Provider>
    </React.StrictMode>
 )
 

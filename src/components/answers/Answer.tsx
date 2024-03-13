@@ -1,5 +1,5 @@
-import { useContext } from 'react'
-import { QandAContext } from '../../Contexts'
+import { useDispatch, useSelector } from 'react-redux'
+import { QAValues, setUserAnswer } from '../../store'
 
 interface AnswerProps {
    num: number
@@ -7,19 +7,21 @@ interface AnswerProps {
 }
 
 export const Answer = ({ num, text }: AnswerProps) => {
-   let { giveAnswer, currentQuestionData } = useContext(QandAContext)
+   const dispatch = useDispatch()
+   const currentQuestionData = useSelector(
+      (state: { QA: QAValues }) => state.QA.currentQuestionData
+   )
 
    function answerQuestion(answerText: string) {
       // currentQuestionData.correct_answer == answerText
       //    ? onCorrectAnimate()
       //    : onWrongAnimate()
 
-      giveAnswer(answerText)
+      dispatch(setUserAnswer(answerText))
    }
 
    return (
       <>
-         {/* <div id={'silverline' + num} className='silverline' /> */}
          <div key={num} className='answer' onClick={() => answerQuestion(text)}>
             <div>{num}</div>
             <div>{text}</div>
