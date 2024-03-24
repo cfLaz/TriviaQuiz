@@ -19,8 +19,8 @@ export async function getRandomQuestions(
 ): Promise<QuestionData[]> {
    if (amount < 1 || amount > 20) amount = 5
    const response = await getWithParams({
-      difficulty: difficulty,
-      amount: amount,
+      difficulty,
+      amount
    })
    let results: QuestionData[] = response.data.results.map((question: any) =>
       decodeBase64Object(question)

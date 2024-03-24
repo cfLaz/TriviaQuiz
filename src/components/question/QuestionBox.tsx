@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getRandomQuestions } from '../../api/getQuestions'
+import { QuestionData, getRandomQuestions } from '../../api/getQuestions'
 import { Classes } from '../../util/Classes'
 import {
    QAValues,
@@ -11,6 +11,7 @@ import {
    setCurrentQuestionData,
 } from '../../store'
 import { AnimatedRectangleTimer } from '../animatedRectangleTimer'
+import { getShuffledArrayElements } from '../../util/arrays'
 
 const QuestionBox = () => {
    const dispatch = useDispatch()
@@ -32,17 +33,26 @@ const QuestionBox = () => {
 
    useEffect(() => {
       const fetchData = async () => {
-         try {
-            const questionsData = await getRandomQuestions('easy')
-            dispatch(setAllQuestionsData(questionsData))
+         const questionsData = await getShuffledQuestionsData();
+            dispatch(setAllQuestionsData(questionsData));
             dispatch(setCurrentQuestionData(questionsData[0]))
-         } catch (error) {
-            console.error('Error fetching data:', error)
-         }
+        
       }
 
+      async function getShuffledQuestionsData(): Promise<QuestionData[]> {
+         try {
+            const [easyQuestionsData, mediumQuestionsData, hardQuestionsData] = await Promise.all([
+               getRandomQuestions('easy'), getRandomQuestions('medium'), getRandomQuestions('hard')
+            ]);
+            return getShuffledArrayElements([...easyQuestionsData, ...mediumQuestionsData, ...hardQuestionsData])
+         } catch (error) {
+            //should deal with this globally, to have a consistent error handling 
+            console.error(error);
+            return []
+         } 
+      }
       fetchData()
-   }, [dispatch])
+   }, [])
 
    useEffect(() => {
       if (userAnswer === allQuestionsData[currentQDataIndex]?.correct_answer) {

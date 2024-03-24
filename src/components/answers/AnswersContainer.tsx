@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { QAValues } from '../../store'
 import { Classes } from '../../util/Classes'
-import { shuffleArrayElements } from '../../util/arrays'
+import { getShuffledArrayElements } from '../../util/arrays'
 import { isObjectEmpty } from '../../util/object'
 import { Answer } from './Answer'
 
@@ -12,7 +12,7 @@ const AnswersContainer = () => {
 
    let answers
    if (!isObjectEmpty(currentQuestionData)) {
-      answers = shuffleArrayElements([
+      answers = getShuffledArrayElements([
          ...currentQuestionData?.incorrect_answers,
          currentQuestionData?.correct_answer,
       ])
