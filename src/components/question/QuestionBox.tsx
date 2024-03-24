@@ -10,6 +10,7 @@ import {
    setCurrentQDataIndex,
    setCurrentQuestionData,
 } from '../../store'
+import { AnimatedRectangleTimer } from '../animatedRectangleTimer'
 
 const QuestionBox = () => {
    const dispatch = useDispatch()
@@ -53,11 +54,14 @@ const QuestionBox = () => {
    }, [userAnswer, dispatch])
 
    return (
-      <div className={Classes.questionBox}>
-         <div className='question'>
-            {isLoading ? 'Loading...' : currentQuestionData.question}
+      <>
+         <div className={Classes.questionBox}>
+            <div className='question'>
+               {isLoading ? 'Loading...' : currentQuestionData.question}
+            </div>
+            <AnimatedRectangleTimer dependancy={currentQuestionData} />
          </div>
-      </div>
+      </>
    )
 }
 
