@@ -29,8 +29,6 @@ const QuestionBox = () => {
       (state: { QA: QAValues }) => state.QA.currentQDataIndex
    )
 
-   const isLoading = allQuestionsData.length === 0
-
    useEffect(() => {
       const fetchData = async () => {
          const questionsData = await getShuffledQuestionsData();
@@ -67,7 +65,9 @@ const QuestionBox = () => {
       <>
          <div className={Classes.questionBox}>
             <div className='question'>
-               {isLoading ? 'Loading...' : currentQuestionData.question}
+               {allQuestionsData.length === 0
+                  ? 'Loading...'
+                  : currentQuestionData.question}
             </div>
             <AnimatedRectangleTimer dependancy={currentQuestionData} />
          </div>
