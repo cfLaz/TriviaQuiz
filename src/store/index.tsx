@@ -3,17 +3,20 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import { QuestionData } from '../api/getQuestions'
 
-export interface QAValues {
+export interface QAStateAndActions {
    allQuestionsData: QuestionData[]
    setAllQuestionsData?: (data: QuestionData[]) => void
    currentQuestionData: QuestionData
-   currentQDataIndex: number
    setCurrentQuestionData?: (data: QuestionData) => void
+   currentQDataIndex: number
+   setCurrentQDataIndex?: (index: number) => void
    userAnswer?: string
-   giveAnswer?: (answer: string) => void
+   setUserAnswer?: (answer: string) => void
+   questionStarted?: boolean
+   setQuestionStarted?: (start: boolean) => void
 }
 
-const initialState: QAValues = {
+const initialState: QAStateAndActions = {
    allQuestionsData: [],
    currentQuestionData: {} as QuestionData,
    currentQDataIndex: 0,
@@ -36,6 +39,9 @@ const QAStore = createSlice({
       setUserAnswer: (state, action) => {
          state.userAnswer = action.payload
       },
+      setQuestionStarted: (state, action) => {
+         state.questionStarted = action.payload
+      },
    },
 })
 
@@ -52,6 +58,7 @@ export const {
    setCurrentQuestionData,
    setUserAnswer,
    setCurrentQDataIndex,
+   setQuestionStarted,
 } = QAStore.actions
 
 export default store

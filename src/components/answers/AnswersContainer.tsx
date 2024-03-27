@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { QAValues } from '../../store'
+import { QAStateAndActions } from '../../store'
 import { Classes } from '../../util/Classes'
 import { getShuffledArrayElements } from '../../util/arrays'
 import { isObjectEmpty } from '../../util/object'
@@ -7,7 +7,7 @@ import { Answer } from './Answer'
 
 const AnswersContainer = () => {
    const currentQuestionData = useSelector(
-      (state: { QA: QAValues }) => state.QA.currentQuestionData
+      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
    )
 
    let answers

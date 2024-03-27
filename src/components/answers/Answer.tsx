@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { QAValues, setUserAnswer } from '../../store'
+import { QAStateAndActions, setUserAnswer } from '../../store'
 
 interface AnswerProps {
    num: number
@@ -9,7 +9,7 @@ interface AnswerProps {
 export const Answer = ({ num, text }: AnswerProps) => {
    const dispatch = useDispatch()
    const currentQuestionData = useSelector(
-      (state: { QA: QAValues }) => state.QA.currentQuestionData
+      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
    )
 
    function answerQuestion(answerText: string) {
