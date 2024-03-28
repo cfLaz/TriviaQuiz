@@ -14,6 +14,7 @@ import {
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { getShuffledArrayElements } from '../../util/arrays'
 import LoadingBar from '../util/loadingBar'
+import { HC15questions } from '../../api/hardcoded15questions'
 
 const QuestionBox = () => {
    const dispatch = useDispatch()
@@ -36,7 +37,8 @@ const QuestionBox = () => {
 
    useEffect(() => {
       const fetchData = async () => {
-         const questionsData = await getShuffledQuestionsData()
+         // const questionsData = await getShuffledQuestionsData()
+         const questionsData = HC15questions
          if (questionsData.length) {
             dispatch(setAllQuestionsData(questionsData))
             dispatch(setCurrentQuestionData(questionsData[0]))
