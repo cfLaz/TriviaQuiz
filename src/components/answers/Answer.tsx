@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { QAStateAndActions, setUserAnswer } from '../../store'
+import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 
 interface AnswerProps {
    num: number
@@ -11,7 +12,9 @@ export const Answer = ({ num, text }: AnswerProps) => {
    const currentQuestionData = useSelector(
       (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
    )
-
+   const questionExpired = useSelector(
+      (state: { QA: QAStateAndActions }) => state.QA.questionExpired
+   )
    function answerQuestion(answerText: string) {
       // currentQuestionData.correct_answer == answerText
       //    ? onCorrectAnimate()
@@ -22,9 +25,14 @@ export const Answer = ({ num, text }: AnswerProps) => {
 
    return (
       <>
-         <div key={num} className='answer' onClick={() => answerQuestion(text)}>
+         <div
+            key={num}
+            className='answer'
+            onClick={() => !questionExpired && answerQuestion(text)}
+         >
             <div>{num}</div>
             <div>{text}</div>
+            {questionExpired && <QuestionExpiredOverlay />}
          </div>
       </>
    )

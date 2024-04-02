@@ -47,7 +47,7 @@ $answer-height: 60px;
    :first-child {
       @include answer-child-style(20%, $color-accent);
    }
-   :last-child {
+   :nth-child(2) {
       @include answer-child-style(80%, $color-primary);
    }
 }

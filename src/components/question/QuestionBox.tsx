@@ -16,6 +16,7 @@ import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { getShuffledArrayElements } from '../../util/arrays'
 import LoadingBar from '../util/loadingBar'
 import { HC15questions } from '../../api/hardcoded15questions'
+import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 
 const QuestionBox = () => {
    const dispatch = useDispatch()
@@ -117,7 +118,7 @@ const QuestionBox = () => {
 
    return (
       <>
-         <div className={Classes.questionBox}>
+         <div className='question-box'>
             <div className='question'>
                {allQuestionsData.length === 0 ? (
                   <div>Loading...</div>
@@ -129,6 +130,8 @@ const QuestionBox = () => {
             {questionStarted && (
                <AnimatedRectangleTimer dependancy={currentQuestionData} />
             )}
+
+            {questionExpired && <QuestionExpiredOverlay />}
          </div>
       </>
    )
