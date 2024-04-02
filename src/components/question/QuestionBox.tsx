@@ -1,6 +1,6 @@
 // QuestionBox.tsx
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { QuestionData, getRandomQuestions } from '../../api/getQuestions'
 import { Classes } from '../../util/Classes'
@@ -9,6 +9,7 @@ import {
    setAllQuestionsData,
    setCurrentQDataIndex,
    setCurrentQuestionData,
+   setQuestionExpired,
    setQuestionStarted,
 } from '../../store'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
@@ -34,6 +35,9 @@ const QuestionBox = () => {
    const questionStarted = useSelector(
       (state: { QA: QAStateAndActions }) => state.QA.questionStarted
    )
+   const questionExpired = useSelector(
+      (state: { QA: QAStateAndActions }) => state.QA.questionExpired
+   )
 
    useEffect(() => {
       const fetchData = async () => {
@@ -46,7 +50,7 @@ const QuestionBox = () => {
          }
       }
 
-      async function getShuffledQuestionsData(): Promise<QuestionData[]> {
+      /*  async function getShuffledQuestionsData(): Promise<QuestionData[]> {
          try {
             const [easyQuestionsData, mediumQuestionsData, hardQuestionsData] =
                await Promise.all([
@@ -75,18 +79,41 @@ const QuestionBox = () => {
             console.error(error)
             return []
          }
-      }
+      } */
       fetchData()
    }, [])
 
    useEffect(() => {
-      if (userAnswer === allQuestionsData[currentQDataIndex]?.correct_answer) {
-         dispatch(
-            setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1])
+      if (questionStarted) {
+         setTimeout(
+            (onSetQDataIndex) => {
+               if (onSetQDataIndex == currentQDataIndex) {
+                  dispatch(setQuestionExpired(true))
+                  dispatch(setQuestionStarted(false))
+               }
+            },
+            15000,
+            currentQDataIndex //onSetQDataIndex
          )
-         dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       }
-   }, [userAnswer, dispatch])
+   }, [questionStarted])
+
+   useEffect(() => {
+      const timeDelay = questionExpired ? 1000 : 0
+      if (
+         userAnswer === allQuestionsData[currentQDataIndex]?.correct_answer ||
+         questionExpired
+      ) {
+         setTimeout(() => {
+            dispatch(
+               setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1])
+            )
+            dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
+            dispatch(setQuestionExpired(false))
+            dispatch(setQuestionStarted(true))
+         }, timeDelay)
+      }
+   }, [userAnswer, questionExpired, dispatch])
 
    return (
       <>

@@ -14,6 +14,8 @@ export interface QAStateAndActions {
    setUserAnswer?: (answer: string) => void
    questionStarted?: boolean
    setQuestionStarted?: (start: boolean) => void
+   questionExpired?: boolean
+   setQuestionExpired?: (expired: boolean) => void
 }
 
 const initialState: QAStateAndActions = {
@@ -21,6 +23,8 @@ const initialState: QAStateAndActions = {
    currentQuestionData: {} as QuestionData,
    currentQDataIndex: 0,
    userAnswer: '',
+   questionStarted: false,
+   questionExpired: false,
 }
 
 const QAStore = createSlice({
@@ -42,6 +46,9 @@ const QAStore = createSlice({
       setQuestionStarted: (state, action) => {
          state.questionStarted = action.payload
       },
+      setQuestionExpired: (state, action) => {
+         state.questionExpired = action.payload
+      },
    },
 })
 
@@ -59,6 +66,7 @@ export const {
    setUserAnswer,
    setCurrentQDataIndex,
    setQuestionStarted,
+   setQuestionExpired,
 } = QAStore.actions
 
 export default store
