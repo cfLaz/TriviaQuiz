@@ -17,8 +17,10 @@ import { getShuffledArrayElements } from '../../util/arrays'
 import LoadingBar from '../util/loadingBar'
 import { HC15questions } from '../../api/hardcoded15questions'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
+import question_expired from '../../assets/sounds/question_expired.wav'
 
 const QuestionBox = () => {
+   const questionExpiredSoundEffect = new Audio(question_expired)
    const dispatch = useDispatch()
 
    const allQuestionsData = useSelector(
@@ -91,6 +93,7 @@ const QuestionBox = () => {
                if (onSetQDataIndex == currentQDataIndex) {
                   dispatch(setQuestionExpired(true))
                   dispatch(setQuestionStarted(false))
+                  questionExpiredSoundEffect.play()
                }
             },
             15000,

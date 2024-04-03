@@ -61,7 +61,7 @@ export function AnimatedRectangleTimer({
             targets: pathRef.current,
             strokeDashoffset: 0,
             easing: 'easeInOutSine',
-            duration: 15000,
+            duration: 16000,
             loop: false,
          })
       }
