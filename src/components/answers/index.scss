@@ -34,7 +34,7 @@ $answer-height: 60px;
    height: 60px;
    overflow: hidden;
    display: flex;
-   border: 4px solid $color-accent;
+   //border: 4px solid $color-accent;
    border-radius: 10%/50%;
    transition: all .2s ease-in-out;
    font-size: $font-size-large;
@@ -49,6 +49,17 @@ $answer-height: 60px;
    }
    :nth-child(2) {
       @include answer-child-style(80%, $color-primary);
+   }
+   &_correct {
+      border: 2px solid green;
+   }
+
+   &_incorrect {
+      border: 2px solid red;
+   }
+
+   &_expired {
+      pointer-events: none;
    }
 }
 

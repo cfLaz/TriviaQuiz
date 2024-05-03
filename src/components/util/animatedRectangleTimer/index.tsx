@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import anime from 'animejs/lib/anime.es.js'
 
 interface AnimatedRectangleTimerProps {
@@ -8,7 +8,9 @@ interface AnimatedRectangleTimerProps {
    borderRadius?: number
    duration?: number
    color?: string
-   dependancy?: any
+   resetDependancy?: any
+   pauseOn?: boolean
+   onAnimationEnd?: (isEnded: boolean) => void
 }
 
 export function AnimatedRectangleTimer({
@@ -61,11 +63,19 @@ export function AnimatedRectangleTimer({
             targets: pathRef.current,
             strokeDashoffset: 0,
             easing: 'easeInOutSine',
-            duration: 16000,
+            duration: 18500,
             loop: false,
+            // complete: () => {},
          })
       }
-   }, [props.targetElementClass, props.dependancy])
+   }, [props.targetElementClass, props.resetDependancy])
+
+   // useEffect(() => {
+   //    if (props.pauseOn && animationRef.current) {
+   //       debugger
+   //       animationRef.current.pause()
+   //    }
+   // }, [props.pauseOn])
 
    return (
       <svg ref={svgRef}>

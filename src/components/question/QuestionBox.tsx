@@ -1,6 +1,4 @@
-// QuestionBox.tsx
-
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { QuestionData, getRandomQuestions } from '../../api/getQuestions'
 import { Classes } from '../../util/Classes'
@@ -20,104 +18,64 @@ import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import question_expired from '../../assets/sounds/question_expired.wav'
 
 const QuestionBox = () => {
-   const questionExpiredSoundEffect = new Audio(question_expired)
+   const questionExpiredSoundEffect = useRef(new Audio(question_expired))
+
    const dispatch = useDispatch()
+   const QASelector = (state: { QA: QAStateAndActions }) => state.QA
+   const {
+      allQuestionsData,
+      currentQuestionData,
+      answerClicked,
+      userAnswer,
+      currentQDataIndex,
+      questionStarted,
+      questionExpired,
+   } = useSelector(QASelector)
 
-   const allQuestionsData = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.allQuestionsData
-   )
-   const currentQuestionData = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
-   )
-   const userAnswer = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.userAnswer
-   )
-   const currentQDataIndex = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQDataIndex
-   )
-   const questionStarted = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.questionStarted
-   )
-   const questionExpired = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.questionExpired
-   )
+   const fetchData = useCallback(async () => {
+      const questionsData = HC15questions
+      if (questionsData.length) {
+         dispatch(setAllQuestionsData(questionsData))
+         dispatch(setCurrentQuestionData(questionsData[0]))
+         dispatch(setCurrentQDataIndex(0))
+         dispatch(setQuestionStarted(true))
+      } /*  async function getShuffledQuestionsData(): Promise<QuestionData[]> { try { const [easyQuestionsData, mediumQuestionsData, hardQuestionsData] = await Promise.all([ getRandomQuestions('easy'), new Promise<QuestionData[]>((resolve) => setTimeout( () => resolve(getRandomQuestions('medium')), 5000 ) ), new Promise<QuestionData[]>((resolve) => setTimeout( () => resolve(getRandomQuestions('hard')), 10000 ) ), ]) return getShuffledArrayElements([ ...easyQuestionsData, ...mediumQuestionsData, ...hardQuestionsData, ]) } catch (error) { //should deal with this globally, to have a consistent error handling console.error(error) return [] } } */
+   }, [dispatch])
 
    useEffect(() => {
-      const fetchData = async () => {
-         // const questionsData = await getShuffledQuestionsData()
-         const questionsData = HC15questions
-         if (questionsData.length) {
-            dispatch(setAllQuestionsData(questionsData))
-            dispatch(setCurrentQuestionData(questionsData[0]))
-            dispatch(setQuestionStarted(true))
-         }
-      }
-
-      /*  async function getShuffledQuestionsData(): Promise<QuestionData[]> {
-         try {
-            const [easyQuestionsData, mediumQuestionsData, hardQuestionsData] =
-               await Promise.all([
-                  getRandomQuestions('easy'),
-                  new Promise<QuestionData[]>((resolve) =>
-                     setTimeout(
-                        () => resolve(getRandomQuestions('medium')),
-                        5000
-                     )
-                  ),
-                  new Promise<QuestionData[]>((resolve) =>
-                     setTimeout(
-                        () => resolve(getRandomQuestions('hard')),
-                        10000
-                     )
-                  ),
-               ])
-
-            return getShuffledArrayElements([
-               ...easyQuestionsData,
-               ...mediumQuestionsData,
-               ...hardQuestionsData,
-            ])
-         } catch (error) {
-            //should deal with this globally, to have a consistent error handling
-            console.error(error)
-            return []
-         }
-      } */
       fetchData()
-   }, [])
+   }, [fetchData])
 
    useEffect(() => {
-      if (questionStarted) {
-         setTimeout(
-            (onSetQDataIndex) => {
-               if (onSetQDataIndex == currentQDataIndex) {
+      let timerId: NodeJS.Timeout
+      if (questionStarted && !userAnswer && !answerClicked) {
+         timerId = setTimeout(() => {
+            {
+               if (questionStarted && !userAnswer && !answerClicked) {
+                  questionExpiredSoundEffect.current.play()
                   dispatch(setQuestionExpired(true))
                   dispatch(setQuestionStarted(false))
-                  questionExpiredSoundEffect.play()
                }
-            },
-            15000,
-            currentQDataIndex //onSetQDataIndex
-         )
+            }
+         }, 15000)
       }
-   }, [questionStarted])
+      return () => {
+         clearTimeout(timerId)
+      }
+   }, [currentQDataIndex, dispatch])
 
-   useEffect(() => {
-      const timeDelay = questionExpired ? 1000 : 0
-      if (
-         userAnswer === allQuestionsData[currentQDataIndex]?.correct_answer ||
-         questionExpired
-      ) {
-         setTimeout(() => {
-            dispatch(
-               setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1])
-            )
-            dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
-            dispatch(setQuestionExpired(false))
-            dispatch(setQuestionStarted(true))
-         }, timeDelay)
-      }
-   }, [userAnswer, questionExpired, dispatch])
+   if (userAnswer) {
+      setupNextQuestion()
+   } else if (questionExpired) {
+      setTimeout(() => setupNextQuestion(), 1000)
+   }
+
+   function setupNextQuestion() {
+      dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
+      dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
+      dispatch(setQuestionExpired(false))
+      dispatch(setQuestionStarted(true))
+   }
 
    return (
       <>
@@ -131,7 +89,10 @@ const QuestionBox = () => {
             </div>
 
             {questionStarted && (
-               <AnimatedRectangleTimer dependancy={currentQuestionData} />
+               <AnimatedRectangleTimer
+                  resetDependancy={currentQuestionData}
+                  pauseOn={!!answerClicked}
+               />
             )}
 
             {questionExpired && <QuestionExpiredOverlay />}

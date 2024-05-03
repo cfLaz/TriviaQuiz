@@ -12,6 +12,8 @@ export interface QAStateAndActions {
    setCurrentQDataIndex?: (index: number) => void
    userAnswer?: string
    setUserAnswer?: (answer: string) => void
+   answerClicked?: boolean
+   setAnswerClicked?: (clicked: boolean) => void
    questionStarted?: boolean
    setQuestionStarted?: (start: boolean) => void
    questionExpired?: boolean
@@ -21,8 +23,9 @@ export interface QAStateAndActions {
 const initialState: QAStateAndActions = {
    allQuestionsData: [],
    currentQuestionData: {} as QuestionData,
-   currentQDataIndex: 0,
+   currentQDataIndex: -1,
    userAnswer: '',
+   answerClicked: false,
    questionStarted: false,
    questionExpired: false,
 }
@@ -39,6 +42,9 @@ const QAStore = createSlice({
       },
       setCurrentQDataIndex: (state, action) => {
          state.currentQDataIndex = action.payload
+      },
+      setAnswerClicked: (state, action) => {
+         state.answerClicked = action.payload
       },
       setUserAnswer: (state, action) => {
          state.userAnswer = action.payload
@@ -63,6 +69,7 @@ const store = configureStore({
 export const {
    setAllQuestionsData,
    setCurrentQuestionData,
+   setAnswerClicked,
    setUserAnswer,
    setCurrentQDataIndex,
    setQuestionStarted,
