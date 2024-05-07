@@ -1,5 +1,4 @@
 // store/index.ts
-
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import { QuestionData } from '../api/getQuestions'
 
@@ -18,6 +17,8 @@ export interface QAStateAndActions {
    setQuestionStarted?: (start: boolean) => void
    questionExpired?: boolean
    setQuestionExpired?: (expired: boolean) => void
+   timerId?: NodeJS.Timeout
+   setTimerId?: (timerId: NodeJS.Timeout) => void
 }
 
 const initialState: QAStateAndActions = {
@@ -28,6 +29,7 @@ const initialState: QAStateAndActions = {
    answerClicked: false,
    questionStarted: false,
    questionExpired: false,
+   timerId: undefined,
 }
 
 const QAStore = createSlice({
@@ -55,6 +57,9 @@ const QAStore = createSlice({
       setQuestionExpired: (state, action) => {
          state.questionExpired = action.payload
       },
+      setTimerId: (state, action) => {
+         state.timerId = action.payload
+      },
    },
 })
 
@@ -74,6 +79,7 @@ export const {
    setCurrentQDataIndex,
    setQuestionStarted,
    setQuestionExpired,
+   setTimerId,
 } = QAStore.actions
 
 export default store

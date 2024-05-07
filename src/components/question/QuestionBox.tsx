@@ -9,6 +9,7 @@ import {
    setCurrentQuestionData,
    setQuestionExpired,
    setQuestionStarted,
+   setTimerId,
 } from '../../store'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { getShuffledArrayElements } from '../../util/arrays'
@@ -30,6 +31,7 @@ const QuestionBox = () => {
       currentQDataIndex,
       questionStarted,
       questionExpired,
+      timerId,
    } = useSelector(QASelector)
 
    const fetchData = useCallback(async () => {
@@ -47,20 +49,21 @@ const QuestionBox = () => {
    }, [fetchData])
 
    useEffect(() => {
-      let timerId: NodeJS.Timeout
       if (questionStarted && !userAnswer && !answerClicked) {
-         timerId = setTimeout(() => {
-            {
-               if (questionStarted && !userAnswer && !answerClicked) {
-                  questionExpiredSoundEffect.current.play()
-                  dispatch(setQuestionExpired(true))
-                  dispatch(setQuestionStarted(false))
-               }
-            }
-         }, 15000)
+         dispatch(
+            setTimerId(
+               setTimeout(() => {
+                  {
+                     questionExpiredSoundEffect.current.play()
+                     dispatch(setQuestionExpired(true))
+                     dispatch(setQuestionStarted(false))
+                  }
+               }, 8000)
+            )
+         )
       }
       return () => {
-         clearTimeout(timerId)
+         dispatch(setTimerId(clearTimeout(timerId)))
       }
    }, [currentQDataIndex, dispatch])
 

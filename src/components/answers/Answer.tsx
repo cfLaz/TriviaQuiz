@@ -1,5 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { QAStateAndActions, setAnswerClicked, setUserAnswer } from '../../store'
+import {
+   QAStateAndActions,
+   setAnswerClicked,
+   setTimerId,
+   setUserAnswer,
+} from '../../store'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { deriveClasses } from '../../util/deriveClasses'
 import { useEffect, useState } from 'react'
@@ -25,12 +30,18 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
       (state: { QA: QAStateAndActions }) => state.QA.userAnswer
    )
 
+   const timerId = useSelector(
+      (state: { QA: QAStateAndActions }) => state.QA.timerId
+   )
+
    const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0)
 
    function answerClick(key: number) {
+      dispatch(setTimerId(clearTimeout(timerId)))
       setAnswerClicked(true)
       setTimeout(() => {
          setClickedAnswerKey(key)
+         //need anticipation sound in this step
       }, 1000)
       setTimeout(() => {
          dispatch(setAnswerClicked(false))
