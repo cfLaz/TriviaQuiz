@@ -1,9 +1,47 @@
-.homepage {
-    width: 100%;
-    height: 100vh; 
-    background: linear-gradient(to bottom, #333333, #000000); 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+// .homepage {
+//     width: 100%;
+//     height: 100vh; 
+//     background: linear-gradient(to bottom, #333333, #000000); 
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//   }
   
+// App.scss
+.homepage {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #033753, #e67513);
+  position: relative;
+  overflow: hidden;
+  color: white;
+
+  h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  // .cursorLight {
+  //   position: absolute;
+  //   width: 300px;
+  //   height: 300px;
+  //   background: radial-gradient(circle at center, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 50%);
+  //   pointer-events: none;
+  //   transform: translate(-50%, -50%);
+  //   mix-blend-mode: soft-light;
+  // }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: $main-layout-size-unit
+}
+
+.logo {
+  width: 200px;
+  height: 150px;
+
+}
