@@ -1,6 +1,7 @@
 // import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import testpic from '../../assets/pictures/TriviaQuiz.png'
+import WheelPicker from '../../components/util/wheelPicker'
 
 export function Home() {
    // return (
@@ -27,7 +28,16 @@ export function Home() {
             <img className='logo' src={testpic}></img>
          </div>
 
-         {/* <Link to='quiz'>Go to quiz</Link> */}
+         <div className='pickers-container'>
+            <div className='picker'>
+               <p>test 1</p>
+               <WheelPicker segments={['mix', 'easy', 'medium', 'hard']} />
+            </div>
+            <div className='picker'>
+               <p>test 2</p>
+               <WheelPicker segments={['mix', 'easy', 'medium', 'hard']} />
+            </div>
+         </div>
       </div>
    )
 }

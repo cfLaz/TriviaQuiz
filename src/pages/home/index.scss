@@ -45,3 +45,17 @@
   height: 150px;
 
 }
+
+.pickers-container {
+  height: 250;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+
+  .picker {
+    display: flex;
+    flex-direction: column;
+    gap: $main-layout-size-unit / 2;
+    align-items: center;
+  }
+}
