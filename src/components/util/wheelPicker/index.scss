@@ -1,7 +1,7 @@
 .wheel {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   overflow: hidden;
   cursor: grab;
@@ -17,7 +17,7 @@
 
   .segment {
     position: absolute;
-    width: 50%;
+    width: 50%; 
     height: 50%;
     top: 0;
     left: 50%;
@@ -35,16 +35,26 @@
       transform: rotate(calc(360deg / var(--segments) / 2));
       color: white;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 12px; 
       white-space: nowrap;
     }
+
+    &.categories {
+      width: 25%;
+      .text {
+        top: 40%;
+        left: -40%;
+        transform: rotate(115deg);
+      }
+    }
+
   }
 
   &::before {
     content: "";
     position: absolute;
-    width: 80px; /* Adjust the size of the hole */
-    height: 80px; /* Adjust the size of the hole */
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background: transparent;
     z-index: 1;

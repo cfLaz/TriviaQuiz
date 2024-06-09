@@ -4,8 +4,6 @@ import testpic from '../../assets/pictures/TriviaQuiz.png'
 import WheelPicker from '../../components/util/wheelPicker'
 
 export function Home() {
-   // return (
-
    /*    const [position, setPosition] = useState({ x: 0, y: 0 })
 
    const handleMouseMove = (event: React.MouseEvent) => {
@@ -15,6 +13,18 @@ export function Home() {
       })
    }
  */
+
+   const difficulties = ['mixed', 'easy', 'medium', 'hard']
+   const categories = [
+      'mixed',
+      'general knowledge',
+      'entertainment',
+      'science',
+      'sports',
+      'geography',
+      'history',
+      'art',
+   ]
    return (
       <div className='homepage' /* onMouseMove={handleMouseMove} */>
          {/* <div
@@ -31,11 +41,11 @@ export function Home() {
          <div className='pickers-container'>
             <div className='picker'>
                <p>test 1</p>
-               <WheelPicker segments={['mix', 'easy', 'medium', 'hard']} />
+               <WheelPicker segments={difficulties} />
             </div>
             <div className='picker'>
                <p>test 2</p>
-               <WheelPicker segments={['mix', 'easy', 'medium', 'hard']} />
+               <WheelPicker segments={categories} />
             </div>
          </div>
       </div>

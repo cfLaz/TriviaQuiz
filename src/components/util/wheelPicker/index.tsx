@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { deriveClasses } from '../../../util/deriveClasses'
 
 interface WheelPickerProps {
    segments: string[]
@@ -11,6 +12,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
    const startAngle = useRef<number | null>(null)
    const velocity = useRef<number>(0)
    const animationFrame = useRef<number>(0)
+   const debounceTimeout = useRef<number | null>(null)
 
    const handleMouseDown = (e: React.MouseEvent) => {
       if (wheelPickerRef.current) {
@@ -37,7 +39,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
          setRotation((prev) => prev + angleDiff * (180 / Math.PI))
          velocity.current = angleDiff * (180 / Math.PI)
          startAngle.current = newAngle
-         updateClosestSegment()
+         debounceUpdateClosestSegment()
       }
    }
 
@@ -52,7 +54,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
       velocity.current *= 0.95
       setRotation((prev) => {
          const newRotation = prev + velocity.current
-         updateClosestSegment(newRotation)
+         debounceUpdateClosestSegment(newRotation)
          return newRotation
       })
       if (Math.abs(velocity.current) > 0.01) {
@@ -61,6 +63,15 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
          // Update the closest segment one last time after the momentum stops
          updateClosestSegment()
       }
+   }
+
+   const debounceUpdateClosestSegment = (currentRotation = rotation) => {
+      if (debounceTimeout.current) {
+         clearTimeout(debounceTimeout.current)
+      }
+      debounceTimeout.current = window.setTimeout(() => {
+         updateClosestSegment(currentRotation)
+      }, 100)
    }
 
    const updateClosestSegment = (currentRotation = rotation) => {
@@ -88,6 +99,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
    }
 
    useEffect(() => console.log(closestSegment), [closestSegment])
+
    const segmentAngle = 360 / segments.length
 
    return (
@@ -103,7 +115,10 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
                return (
                   <div
                      key={index}
-                     className='segment'
+                     className={deriveClasses({
+                        segment: true,
+                        categories: segments.length > 6,
+                     })}
                      style={
                         {
                            transform: `rotate(${segmentRotation}deg)`,
@@ -112,16 +127,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
                         } as React.CSSProperties
                      }
                   >
-                     <div
-                        className='text'
-                        style={{
-                           transform: `rotate(-${
-                              segmentRotation + segmentAngle / 2
-                           }deg)`,
-                        }}
-                     >
-                        {text}
-                     </div>
+                     <div className='text'>{text}</div>
                   </div>
                )
             })}
