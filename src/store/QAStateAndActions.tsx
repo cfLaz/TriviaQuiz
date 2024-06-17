@@ -63,14 +63,6 @@ const QAStore = createSlice({
    },
 })
 
-// Create the Redux store
-const store = configureStore({
-   reducer: {
-      QA: QAStore.reducer,
-   },
-})
-
-// Export the actions
 export const {
    setAllQuestionsData,
    setCurrentQuestionData,
@@ -82,4 +74,4 @@ export const {
    setTimerId,
 } = QAStore.actions
 
-export default store
+export default QAStore

@@ -4,7 +4,7 @@ import {
    setAnswerClicked,
    setTimerId,
    setUserAnswer,
-} from '../../store'
+} from '../../store/QAStateAndActions'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { deriveClasses } from '../../util/deriveClasses'
 import { useEffect, useState } from 'react'

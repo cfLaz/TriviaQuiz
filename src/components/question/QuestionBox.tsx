@@ -10,7 +10,7 @@ import {
    setQuestionExpired,
    setQuestionStarted,
    setTimerId,
-} from '../../store'
+} from '../../store/QAStateAndActions'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { getShuffledArrayElements } from '../../util/arrays'
 import LoadingBar from '../util/loadingBar'

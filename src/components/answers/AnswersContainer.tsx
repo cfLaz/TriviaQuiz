@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { QAStateAndActions, setUserAnswer } from '../../store'
+import { QAStateAndActions, setUserAnswer } from '../../store/QAStateAndActions'
 import { Classes } from '../../util/Classes'
 import { getShuffledArrayElements } from '../../util/arrays'
 import { isObjectEmpty } from '../../util/object'
