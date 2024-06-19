@@ -1,13 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { deriveClasses } from '../../../util/deriveClasses'
+import { useDispatch } from 'react-redux'
 
 interface WheelPickerProps {
    segments: string[]
+   storeReducer?: any
 }
 
-const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
+const WheelPicker: React.FC<WheelPickerProps> = ({
+   segments,
+   storeReducer,
+}) => {
+   const dispatch = useDispatch()
+
    const [rotation, setRotation] = useState(0)
-   const [closestSegment, setClosestSegment] = useState<string>('')
    const wheelPickerRef = useRef<HTMLDivElement>(null)
    const startAngle = useRef<number | null>(null)
    const velocity = useRef<number>(0)
@@ -39,7 +45,7 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
          setRotation((prev) => prev + angleDiff * (180 / Math.PI))
          velocity.current = angleDiff * (180 / Math.PI)
          startAngle.current = newAngle
-         debounceUpdateClosestSegment()
+         debounceUpdatePick()
       }
    }
 
@@ -54,27 +60,27 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
       velocity.current *= 0.95
       setRotation((prev) => {
          const newRotation = prev + velocity.current
-         debounceUpdateClosestSegment(newRotation)
+         debounceUpdatePick(newRotation)
          return newRotation
       })
       if (Math.abs(velocity.current) > 0.01) {
          animationFrame.current = requestAnimationFrame(animateMomentum)
       } else {
          // Update the closest segment one last time after the momentum stops
-         updateClosestSegment()
+         updatePick()
       }
    }
 
-   const debounceUpdateClosestSegment = (currentRotation = rotation) => {
+   const debounceUpdatePick = (currentRotation = rotation) => {
       if (debounceTimeout.current) {
          clearTimeout(debounceTimeout.current)
       }
       debounceTimeout.current = window.setTimeout(() => {
-         updateClosestSegment(currentRotation)
+         updatePick(currentRotation)
       }, 100)
    }
 
-   const updateClosestSegment = (currentRotation = rotation) => {
+   const updatePick = (currentRotation = rotation) => {
       if (!wheelPickerRef.current) return
       const segments = wheelPickerRef.current.querySelectorAll('.segment')
       let closestElement: HTMLElement | null = null
@@ -94,11 +100,9 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
          const textElement = (closestElement as HTMLElement).querySelector(
             '.text'
          )
-         setClosestSegment(textElement?.textContent || '')
+         dispatch(storeReducer(textElement?.textContent || ''))
       }
    }
-
-   useEffect(() => console.log(closestSegment), [closestSegment])
 
    const segmentAngle = 360 / segments.length
 
@@ -132,7 +136,6 @@ const WheelPicker: React.FC<WheelPickerProps> = ({ segments }) => {
                )
             })}
          </div>
-         {closestSegment && <div>Closest segment: {closestSegment}</div>}
       </div>
    )
 }

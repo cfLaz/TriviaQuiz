@@ -2,6 +2,8 @@
 import { Link } from 'react-router-dom'
 import testpic from '../../assets/pictures/TriviaQuiz.png'
 import WheelPicker from '../../components/util/wheelPicker'
+import { useDispatch } from 'react-redux'
+import { setCategory, setDifficulty } from '../../store/QuizData'
 
 export function Home() {
    /*    const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -39,13 +41,17 @@ export function Home() {
          </div>
 
          <div className='pickers-container'>
+            <div>Choose your quiz setup</div>
             <div className='picker'>
-               <p>test 1</p>
-               <WheelPicker segments={difficulties} />
+               <p>Difficulty: {}</p>
+               <WheelPicker
+                  segments={difficulties}
+                  storeReducer={setDifficulty}
+               />
             </div>
             <div className='picker'>
-               <p>test 2</p>
-               <WheelPicker segments={categories} />
+               <p>Category: {}</p>
+               <WheelPicker segments={categories} storeReducer={setCategory} />
             </div>
          </div>
       </div>
