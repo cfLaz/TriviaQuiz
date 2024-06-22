@@ -12,7 +12,7 @@
     background-color: rgba(black, 0.6);
     grid-area: row-line-start / col-line-3 / row-line-middle / col-line-4;
     border: 6px double $color-accent;
-    border-radius: 25px;
+    border-radius: $border-radius-main;
 }
 
 .question {

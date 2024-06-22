@@ -12,8 +12,6 @@
    grid-gap: 4px;
    padding: 8px;
    justify-items: center;
-
-   font-family: 'Poppins';
 }
 
 @mixin answer-child-style($width, $background-color) {
@@ -35,7 +33,7 @@ $answer-height: 60px;
    overflow: hidden;
    display: flex;
    //border: 4px solid $color-accent;
-   border-radius: 10%/50%;
+   border-radius: $border-radius-main;
    transition: all .2s ease-in-out;
    font-size: $font-size-large;
    color: #fff;

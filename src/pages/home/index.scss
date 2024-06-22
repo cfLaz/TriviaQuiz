@@ -14,7 +14,12 @@
   background: linear-gradient(to bottom, #033753, #e67513);
   position: relative;
   overflow: hidden;
-  color: white;
+  color: whitesmoke;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
 
   h1 {
     position: absolute;
