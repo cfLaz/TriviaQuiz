@@ -23,11 +23,12 @@ body {
    width: 100vw;
    position: relative;
    margin: 0;
-   font-family: 'Roboto', -apple-system, BlinkMacSystemFont,  'Segoe UI',
+   font-family: 'Poppins', -apple-system, BlinkMacSystemFont,  'Roboto',
       'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
       'Helvetica Neue', sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
+   letter-spacing: 0.5px;
    scrollbar-color: $color-main-bg;
    scrollbar-face-color: $color-accent;
 }
