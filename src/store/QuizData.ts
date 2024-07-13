@@ -1,9 +1,9 @@
 // store/index.ts
 import { configureStore, createSlice } from '@reduxjs/toolkit'
-import { QuestionData } from '../api/getQuestions'
+import { Difficulty, QuestionData } from '../api/getQuestions'
 
 export interface QuizDataStateAndActions {
-   difficulty: 'medium' | 'mix' | 'easy' | 'hard'
+   difficulty: Difficulty;
    setDifficulty?: (difficulty: string) => void
    category: string //will be id in the API
    setCategory?: (category: string) => void
@@ -11,7 +11,7 @@ export interface QuizDataStateAndActions {
 
 const initialState: QuizDataStateAndActions = {
    difficulty: 'mix',
-   category: '',
+   category: '', //empty means mixed random categories
 }
 
 const QuizDataStore = createSlice({

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { QuestionData, getRandomQuestions } from '../../api/getQuestions'
+import { QuestionData, getCategories, getRandomQuestions } from '../../api/getQuestions'
 import { Classes } from '../../util/Classes'
 import {
    QAStateAndActions,
@@ -17,11 +17,19 @@ import LoadingBar from '../util/loadingBar'
 import { HC15questions } from '../../api/hardcoded15questions'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import question_expired from '../../assets/sounds/question_expired.wav'
+import { QuizDataStateAndActions } from '../../store/QuizData'
+import { setupCategories } from '../../util/setupCategories'
 
 const QuestionBox = () => {
    const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const dispatch = useDispatch()
+   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) => state.QuizData
+   const {
+     difficulty,
+     category,
+   } = useSelector(QuizSetup);
+
    const QASelector = (state: { QA: QAStateAndActions }) => state.QA
    const {
       allQuestionsData,
@@ -45,8 +53,22 @@ const QuestionBox = () => {
    }, [dispatch])
 
    useEffect(() => {
-      fetchData()
+      setupQuiz()
+      
    }, [fetchData])
+
+   async function setupQuiz () {
+      let result = await getCategories();
+      const categories = setupCategories(result);
+
+      console.log(result);
+      console.log(categories);
+      // await getRandomQuestions(difficulty, category)
+      fetchData()
+   }
+   
+
+
 
    useEffect(() => {
       if (questionStarted && !userAnswer && !answerClicked) {

@@ -2,8 +2,8 @@
 import { Link } from 'react-router-dom'
 import testpic from '../../assets/pictures/TriviaQuiz.png'
 import WheelPicker from '../../components/util/wheelPicker'
-import { useDispatch } from 'react-redux'
-import { setCategory, setDifficulty } from '../../store/QuizData'
+import { useDispatch, useSelector } from 'react-redux'
+import { QuizDataStateAndActions, setCategory, setDifficulty } from '../../store/QuizData'
 import TextContainer from '../../components/util/fancyPantsTextContainer'
 
 export function Home() {
@@ -16,8 +16,13 @@ export function Home() {
       })
    }
  */
+   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) => state.QuizData
+   const {
+     difficulty,
+     category,
+   } = useSelector(QuizSetup)
 
-   const difficulties = ['mixed', 'easy', 'medium', 'hard']
+   const difficulties = ['mixed', 'easy', 'medium', 'hard'];
    const categories = [
       'mixed',
       'general knowledge',
@@ -27,7 +32,9 @@ export function Home() {
       'geography',
       'history',
       'art',
-   ]
+   ];
+
+   
    return (
       <div className='homepage' /* onMouseMove={handleMouseMove} */>
          {/* <div
@@ -44,14 +51,14 @@ export function Home() {
          <TextContainer text='Choose your quiz setup' />
          <div className='pickers-container'>
             <div className='picker'>
-               <p>Difficulty: {}</p>
+               <p>Difficulty: {difficulty}</p>
                <WheelPicker
                   segments={difficulties}
                   storeReducer={setDifficulty}
                />
             </div>
             <div className='picker'>
-               <p>Category: {}</p>
+               <p>Category: {category}</p>
                <WheelPicker segments={categories} storeReducer={setCategory} />
             </div>
          </div>
