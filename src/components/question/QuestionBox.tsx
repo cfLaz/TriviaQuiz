@@ -42,7 +42,7 @@ const QuestionBox = () => {
       return () => {
          dispatch(setAllQuestionsData({}))
       }
-   }, [setupQuiz])
+   }, [])
 
    async function setupQuiz() {
       let result = await getCategories()
