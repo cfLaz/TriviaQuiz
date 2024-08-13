@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { QuestionData, getCategories, getRandomQuestions } from '../../api/getQuestions'
-import { Classes } from '../../util/Classes'
+import { useCallback, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCategories } from '../../api/getQuestions'
+import { HC15questions } from '../../api/hardcoded15questions'
+import question_expired from '../../assets/sounds/question_expired.wav'
 import {
    QAStateAndActions,
    setAllQuestionsData,
@@ -11,24 +12,18 @@ import {
    setQuestionStarted,
    setTimerId,
 } from '../../store/QAStateAndActions'
-import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
-import { getShuffledArrayElements } from '../../util/arrays'
-import LoadingBar from '../util/loadingBar'
-import { HC15questions } from '../../api/hardcoded15questions'
-import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
-import question_expired from '../../assets/sounds/question_expired.wav'
 import { QuizDataStateAndActions } from '../../store/QuizData'
-import { setupCategories } from '../../util/setupCategories'
+import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
+import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
+import { setupCategories, setupQuestions } from './util'
 
 const QuestionBox = () => {
    const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const dispatch = useDispatch()
-   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) => state.QuizData
-   const {
-     difficulty,
-     category,
-   } = useSelector(QuizSetup);
+   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) =>
+      state.QuizData
+   const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
    const QASelector = (state: { QA: QAStateAndActions }) => state.QA
    const {
@@ -42,33 +37,32 @@ const QuestionBox = () => {
       timerId,
    } = useSelector(QASelector)
 
-   const fetchData = useCallback(async () => {
-      const questionsData = HC15questions
-      if (questionsData.length) {
-         dispatch(setAllQuestionsData(questionsData))
-         dispatch(setCurrentQuestionData(questionsData[0]))
-         dispatch(setCurrentQDataIndex(0))
-         dispatch(setQuestionStarted(true))
-      } /*  async function getShuffledQuestionsData(): Promise<QuestionData[]> { try { const [easyQuestionsData, mediumQuestionsData, hardQuestionsData] = await Promise.all([ getRandomQuestions('easy'), new Promise<QuestionData[]>((resolve) => setTimeout( () => resolve(getRandomQuestions('medium')), 5000 ) ), new Promise<QuestionData[]>((resolve) => setTimeout( () => resolve(getRandomQuestions('hard')), 10000 ) ), ]) return getShuffledArrayElements([ ...easyQuestionsData, ...mediumQuestionsData, ...hardQuestionsData, ]) } catch (error) { //should deal with this globally, to have a consistent error handling console.error(error) return [] } } */
-   }, [dispatch])
-
    useEffect(() => {
       setupQuiz()
-      
-   }, [fetchData])
+      return () => {
+         dispatch(setAllQuestionsData({}))
+      }
+   }, [setupQuiz])
 
-   async function setupQuiz () {
-      let result = await getCategories();
-      const categories = setupCategories(result);
+   async function setupQuiz() {
+      let result = await getCategories()
+      const categories = setupCategories(result)
 
-      console.log(result);
-      console.log(categories);
-      // await getRandomQuestions(difficulty, category)
-      fetchData()
+      console.log(result)
+      console.log(categories)
+
+      const questions = await setupQuestions({
+         categories,
+         selectedCategory,
+         selectedDifficulty,
+      })
+      if (questions?.length) {
+         dispatch(setAllQuestionsData(questions))
+         dispatch(setCurrentQuestionData(questions[0]))
+         dispatch(setCurrentQDataIndex(0))
+         dispatch(setQuestionStarted(true))
+      }
    }
-   
-
-
 
    useEffect(() => {
       if (questionStarted && !userAnswer && !answerClicked) {
@@ -80,7 +74,7 @@ const QuestionBox = () => {
                      dispatch(setQuestionExpired(true))
                      dispatch(setQuestionStarted(false))
                   }
-               }, 8000)
+               }, 15000)
             )
          )
       }
@@ -106,10 +100,10 @@ const QuestionBox = () => {
       <>
          <div className='question-box'>
             <div className='question'>
-               {allQuestionsData.length === 0 ? (
+               {allQuestionsData?.length === 0 ? (
                   <div>Loading...</div>
                ) : (
-                  currentQuestionData.question
+                  currentQuestionData?.question
                )}
             </div>
 

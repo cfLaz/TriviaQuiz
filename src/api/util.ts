@@ -3,7 +3,7 @@ import axios from 'axios'
 export const API_BASE_URL = 'https://opentdb.com/' //TODO env var ?
 
 interface Params {
-   [key: string]: string | number
+   [key: string]: string | number | undefined
 }
 
 export async function getWithParams(params: Params) {

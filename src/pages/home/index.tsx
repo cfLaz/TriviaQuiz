@@ -1,10 +1,15 @@
 // import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import testpic from '../../assets/pictures/TriviaQuiz.png'
-import WheelPicker from '../../components/util/wheelPicker'
-import { useDispatch, useSelector } from 'react-redux'
-import { QuizDataStateAndActions, setCategory, setDifficulty } from '../../store/QuizData'
 import TextContainer from '../../components/util/fancyPantsTextContainer'
+import WheelPicker from '../../components/util/wheelPicker'
+import {
+   QuizDataStateAndActions,
+   setCategory,
+   setDifficulty,
+} from '../../store/QuizData'
+import { categories, difficulties } from './util'
 
 export function Home() {
    /*    const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -16,25 +21,10 @@ export function Home() {
       })
    }
  */
-   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) => state.QuizData
-   const {
-     difficulty,
-     category,
-   } = useSelector(QuizSetup)
+   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) =>
+      state.QuizData
+   const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
-   const difficulties = ['mixed', 'easy', 'medium', 'hard'];
-   const categories = [
-      'mixed',
-      'general knowledge',
-      'entertainment',
-      'science',
-      'sports',
-      'geography',
-      'history',
-      'art',
-   ];
-
-   
    return (
       <div className='homepage' /* onMouseMove={handleMouseMove} */>
          {/* <div
@@ -51,14 +41,14 @@ export function Home() {
          <TextContainer text='Choose your quiz setup' />
          <div className='pickers-container'>
             <div className='picker'>
-               <p>Difficulty: {difficulty}</p>
+               <p>Difficulty: {selectedDifficulty}</p>
                <WheelPicker
                   segments={difficulties}
                   storeReducer={setDifficulty}
                />
             </div>
             <div className='picker'>
-               <p>Category: {category}</p>
+               <p>Category: {selectedCategory}</p>
                <WheelPicker segments={categories} storeReducer={setCategory} />
             </div>
          </div>
