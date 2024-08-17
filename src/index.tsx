@@ -7,6 +7,7 @@ import Quiz from './pages/quiz'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './store'
+import Result from './pages/result';
 
 // const router = createBrowserRouter(
 //    createRoutesFromElements(
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
    {
       path: '/quiz',
       element: <Quiz />,
+   },
+   {
+      path: '/result',
+      element: <Result />,
    },
 ])
 

@@ -16,6 +16,7 @@ import { QuizDataStateAndActions } from '../../store/QuizData'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { setupCategories, setupQuestions } from './util'
+import { redirect } from 'react-router-dom'
 
 const QuestionBox = () => {
    const questionExpiredSoundEffect = useRef(new Audio(question_expired))
@@ -84,12 +85,13 @@ const QuestionBox = () => {
    }, [currentQDataIndex, dispatch])
 
    if (userAnswer) {
-      setupNextQuestion()
+      SetupNextQuestion()
    } else if (questionExpired) {
-      setTimeout(() => setupNextQuestion(), 1000)
+      setTimeout(() => SetupNextQuestion(), 1000)
    }
 
-   function setupNextQuestion() {
+   function SetupNextQuestion() {
+      if (currentQDataIndex == 14) return redirect('/result');
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
       dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       dispatch(setQuestionExpired(false))
