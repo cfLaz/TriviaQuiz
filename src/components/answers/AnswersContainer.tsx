@@ -7,11 +7,19 @@ import { Answer } from './Answer'
 import { useEffect } from 'react'
 
 const AnswersContainer = () => {
-   const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
-   const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
    const dispatch = useDispatch()
+   
+   const currentQuestionData = useSelector(
+      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
+   )
+   const currentQDataIndex = useSelector(
+      (state: { QA: QAStateAndActions }) => state.QA.currentQDataIndex
+   )
+   //TODO:Why does this cause a bug on answer click?
+   // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
+   // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
 
-   let answers
+   let answers;
    if (!isObjectEmpty(currentQuestionData)) {
       answers = getShuffledArrayElements([
          ...currentQuestionData?.incorrect_answers,
