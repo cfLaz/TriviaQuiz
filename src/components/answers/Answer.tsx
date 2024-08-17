@@ -17,23 +17,14 @@ interface AnswerProps {
 
 export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
    const dispatch = useDispatch()
-   const currentQuestionData = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
-   )
-   const questionExpired = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.questionExpired
-   )
-   const answerClicked = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.answerClicked
-   )
-   const userAnswer = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.userAnswer
-   )
-
-   const timerId = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.timerId
-   )
-
+   const QASelector = (state: { QA: QAStateAndActions }) => state.QA
+   const {
+      currentQuestionData,
+      answerClicked,
+      userAnswer,
+      questionExpired,
+      timerId,
+   } = useSelector(QASelector)
    const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0)
 
    function answerClick(key: number) {
@@ -69,8 +60,7 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
          </div>
       </>
    )
-
-   function onCorrectAnimate() {}
 }
+function onCorrectAnimate() {}
 
 function onWrongAnimate() {}

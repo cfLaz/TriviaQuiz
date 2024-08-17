@@ -7,12 +7,8 @@ import { Answer } from './Answer'
 import { useEffect } from 'react'
 
 const AnswersContainer = () => {
-   const currentQuestionData = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
-   )
-   const currentQDataIndex = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQDataIndex
-   )
+   const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
+   const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
    const dispatch = useDispatch()
 
    let answers
