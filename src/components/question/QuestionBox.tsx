@@ -16,12 +16,13 @@ import { QuizDataStateAndActions } from '../../store/QuizData'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { setupCategories, setupQuestions } from './util'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const QuestionBox = () => {
    const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) =>
       state.QuizData
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
@@ -91,7 +92,9 @@ const QuestionBox = () => {
    }
 
    function SetupNextQuestion() {
-      if (currentQDataIndex == 14) return redirect('/result');
+      if (currentQDataIndex == 14) {
+         return navigate('/result')
+      }
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
       dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       dispatch(setQuestionExpired(false))
