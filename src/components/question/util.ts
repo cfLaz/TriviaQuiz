@@ -48,44 +48,51 @@ export async function setupQuestions({
    let questionsData
    const mixed = 'mixed'
 
-   if (selectedCategory === mixed && selectedDifficulty === mixed)
-      questionsData = await getQuestions()
-   else if (selectedCategory === mixed)
-      //@ts-ignore-error
-      questionsData = await getQuestions({ selectedDifficulty })
-   else {
-      const difficulty = selectedDifficulty === mixed ? '' : selectedDifficulty
+   try {
+      if (selectedCategory === mixed && selectedDifficulty === mixed)
+         questionsData = await getQuestions()
+      else if (selectedCategory === mixed)
+         //@ts-ignore-error
+         questionsData = await getQuestions({ selectedDifficulty })
+      else {
+         const difficulty =
+            selectedDifficulty === mixed ? '' : selectedDifficulty
 
-      if (Array.isArray(categories[selectedCategory])) {
-         const threeRandomIds = getThreeRandomIds(
-            categories[selectedCategory] as Array<number>
-         )
-         const firstPart = await getQuestions({
-            difficulty,
-            category: threeRandomIds[0],
-            amount: 5,
-         })
-         await delay(5000)
-         const secondPart = await getQuestions({
-            difficulty,
-            category: threeRandomIds[1],
-            amount: 5,
-         })
-         await delay(5000)
-         const thirdPart = await getQuestions({
-            difficulty,
-            category: threeRandomIds[2],
-            amount: 5,
-         })
-         questionsData = [firstPart, secondPart, thirdPart]
-      } else {
-         questionsData = getQuestions({
-            difficulty,
-            category: categories[selectedCategory] as number,
-         })
+         if (Array.isArray(categories[selectedCategory])) {
+            const threeRandomIds = getThreeRandomIds(
+               categories[selectedCategory] as Array<number>
+            )
+            const firstPart = await getQuestions({
+               difficulty,
+               category: threeRandomIds[0],
+               amount: 5,
+            })
+            await delay(5000)
+            const secondPart = await getQuestions({
+               difficulty,
+               category: threeRandomIds[1],
+               amount: 5,
+            })
+            await delay(5000)
+            const thirdPart = await getQuestions({
+               difficulty,
+               category: threeRandomIds[2],
+               amount: 5,
+            })
+            //@ts-expect-error
+            questionsData = [...firstPart, ...secondPart, ...thirdPart]
+         } else {
+            questionsData = getQuestions({
+               difficulty,
+               category: categories[selectedCategory] as number,
+            })
+         }
       }
-   }
-   return questionsData
+      return questionsData
+   } catch (error) {
+      alert(error)
+      console.log(error)
+   }   
 }
 
 function getThreeRandomIds(IdsArray: Array<number>): Array<number> {

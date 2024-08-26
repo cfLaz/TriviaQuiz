@@ -50,8 +50,6 @@ const QuestionBox = () => {
       let result = await getCategories()
       const categories = setupCategories(result)
 
-      console.log(result)
-      console.log(categories)
 
       const questions = await setupQuestions({
          categories,
@@ -59,6 +57,7 @@ const QuestionBox = () => {
          selectedDifficulty,
       })
       if (questions?.length) {
+         debugger
          dispatch(setAllQuestionsData(questions))
          dispatch(setCurrentQuestionData(questions[0]))
          dispatch(setCurrentQDataIndex(0))
