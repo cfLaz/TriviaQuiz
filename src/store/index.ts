@@ -1,11 +1,11 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import QAStore from './QAStateAndActions'
-import QuizDataStore from './QuizSetup'
+import QuizSetupStore from './QuizSetup'
 
 const store = configureStore({
    reducer: {
       QA: QAStore.reducer,
-      QuizSetup: QuizDataStore.reducer,
+      QuizSetup: QuizSetupStore.reducer,
    },
 })
 
