@@ -16,7 +16,7 @@ const initialState: QuizDataStateAndActions = {
 }
 
 const QuizDataStore = createSlice({
-   name: 'QuizData',
+   name: 'QuizSetup',
    initialState,
    reducers: {
       setDifficulty: (state, action) => {

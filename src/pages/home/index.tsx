@@ -8,7 +8,7 @@ import {
    QuizDataStateAndActions,
    setCategory,
    setDifficulty,
-} from '../../store/QuizData'
+} from '../../store/QuizSetup'
 import { categories, difficulties } from './util'
 
 export function Home() {
@@ -21,8 +21,8 @@ export function Home() {
       })
    }
  */
-   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) =>
-      state.QuizData
+   const QuizSetup = (state: { QuizSetup: QuizDataStateAndActions }) =>
+      state.QuizSetup
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
    return (

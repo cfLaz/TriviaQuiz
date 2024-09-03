@@ -12,7 +12,7 @@ import {
    setQuestionStarted,
    setTimerId,
 } from '../../store/QAStateAndActions'
-import { QuizDataStateAndActions } from '../../store/QuizData'
+import { QuizDataStateAndActions } from '../../store/QuizSetup'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { setupCategories, setupQuestions } from './util'
@@ -23,8 +23,8 @@ const QuestionBox = () => {
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const QuizSetup = (state: { QuizData: QuizDataStateAndActions }) =>
-      state.QuizData
+   const QuizSetup = (state: { QuizSetup: QuizDataStateAndActions }) =>
+      state.QuizSetup
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
    const QASelector = (state: { QA: QAStateAndActions }) => state.QA
@@ -49,7 +49,6 @@ const QuestionBox = () => {
    async function setupQuiz() {
       let result = await getCategories()
       const categories = setupCategories(result)
-
 
       const questions = await setupQuestions({
          categories,
