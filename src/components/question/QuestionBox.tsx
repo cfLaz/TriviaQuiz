@@ -1,43 +1,44 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { getCategories } from '../../api/getQuestions'
-import { HC15questions } from '../../api/hardcoded15questions'
 import question_expired from '../../assets/sounds/question_expired.wav'
+import { AnswerStateProps, setTimerId } from '../../store/AnswersController'
 import {
-   QAStateAndActions,
+   QuestionsStateProps,
    setAllQuestionsData,
    setCurrentQDataIndex,
    setCurrentQuestionData,
    setQuestionExpired,
    setQuestionStarted,
-   setTimerId,
-} from '../../store/QAStateAndActions'
-import { QuizDataStateAndActions } from '../../store/QuizSetup'
+} from '../../store/QuestionsController'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { setupCategories, setupQuestions } from './util'
-import { useNavigate } from 'react-router-dom'
+import { QuizSetupProps } from '../../store/QuizSetupController'
 
 const QuestionBox = () => {
    const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const QuizSetup = (state: { QuizSetup: QuizDataStateAndActions }) =>
-      state.QuizSetup
+   const QuizSetup = (state: { QuizSetupState: QuizSetupProps }) =>
+      state.QuizSetupState
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
-   const QASelector = (state: { QA: QAStateAndActions }) => state.QA
+   const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
+      state.QuestionsState
+   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
+      state.AnswersState
    const {
       allQuestionsData,
       currentQuestionData,
-      answerClicked,
-      userAnswer,
       currentQDataIndex,
       questionStarted,
       questionExpired,
-      timerId,
-   } = useSelector(QASelector)
+   } = useSelector(QuestionsSelector)
+
+   const { answerClicked, userAnswer, timerId } = useSelector(AnswersSelector)
 
    useEffect(() => {
       setupQuiz()
@@ -56,7 +57,6 @@ const QuestionBox = () => {
          selectedDifficulty,
       })
       if (questions?.length) {
-         debugger
          dispatch(setAllQuestionsData(questions))
          dispatch(setCurrentQuestionData(questions[0]))
          dispatch(setCurrentQDataIndex(0))

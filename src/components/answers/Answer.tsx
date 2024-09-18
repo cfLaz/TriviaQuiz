@@ -1,13 +1,14 @@
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { AnswerStateProps } from '../../store/AnswersController'
 import {
-   QAStateAndActions,
    setAnswerClicked,
    setTimerId,
    setUserAnswer,
-} from '../../store/QAStateAndActions'
-import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
+} from '../../store/AnswersController'
 import { deriveClasses } from '../../util/deriveClasses'
-import { useEffect, useState } from 'react'
+import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
+import { QuestionsStateProps } from '../../store/QuestionsController'
 
 interface AnswerProps {
    num: number
@@ -17,14 +18,14 @@ interface AnswerProps {
 
 export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
    const dispatch = useDispatch()
-   const QASelector = (state: { QA: QAStateAndActions }) => state.QA
-   const {
-      currentQuestionData,
-      answerClicked,
-      userAnswer,
-      questionExpired,
-      timerId,
-   } = useSelector(QASelector)
+   const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
+      state.QuestionsState
+   const { questionExpired } = useSelector(QuestionsSelector)
+
+   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
+      state.AnswersState
+   const { answerClicked, timerId } = useSelector(AnswersSelector)
+
    const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0)
 
    function answerClick(key: number) {

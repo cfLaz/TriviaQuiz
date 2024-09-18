@@ -5,10 +5,10 @@ import testpic from '../../assets/pictures/TriviaQuiz.png'
 import TextContainer from '../../components/util/fancyPantsTextContainer'
 import WheelPicker from '../../components/util/wheelPicker'
 import {
-   QuizDataStateAndActions,
+   QuizSetupProps,
    setCategory,
    setDifficulty,
-} from '../../store/QuizSetup'
+} from '../../store/QuizSetupController'
 import { categories, difficulties } from './util'
 
 export function Home() {
@@ -21,8 +21,8 @@ export function Home() {
       })
    }
  */
-   const QuizSetup = (state: { QuizSetup: QuizDataStateAndActions }) =>
-      state.QuizSetup
+   const QuizSetup = (state: { QuizSetupState: QuizSetupProps }) =>
+      state.QuizSetupState
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
    return (

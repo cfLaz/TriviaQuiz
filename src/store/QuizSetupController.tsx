@@ -2,20 +2,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { SelectableCategory, SelectableDifficulty } from '../pages/home/util'
 
-export interface QuizDataStateAndActions {
+export interface QuizSetupProps {
    selectedDifficulty: SelectableDifficulty
    setDifficulty?: (difficulty: string) => void
    selectedCategory: SelectableCategory
    setCategory?: (category: string) => void
 }
 
-const initialState: QuizDataStateAndActions = {
+const initialState: QuizSetupProps = {
    selectedDifficulty: 'mixed',
    selectedCategory: 'mixed',
 }
 
-const QuizSetupStore = createSlice({
-   name: 'QuizSetup',
+const QuizSetupSlice = createSlice({
+   name: 'QuizSetupController',
    initialState,
    reducers: {
       setDifficulty: (state, action) => {
@@ -27,6 +27,6 @@ const QuizSetupStore = createSlice({
    },
 })
 
-export const { setDifficulty, setCategory } = QuizSetupStore.actions
+export const { setDifficulty, setCategory } = QuizSetupSlice.actions
 
-export default QuizSetupStore
+export default QuizSetupSlice

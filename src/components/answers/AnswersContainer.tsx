@@ -1,25 +1,28 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { QAStateAndActions, setUserAnswer } from '../../store/QAStateAndActions'
+import { QuestionsStateProps } from '../../store/QuestionsController'
 import { Classes } from '../../util/Classes'
 import { getShuffledArrayElements } from '../../util/arrays'
 import { isObjectEmpty } from '../../util/object'
 import { Answer } from './Answer'
 import { useEffect } from 'react'
+import { setUserAnswer } from '../../store/AnswersController'
 
 const AnswersContainer = () => {
    const dispatch = useDispatch()
-   
+
    const currentQuestionData = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQuestionData
+      (state: { QuestionsState: QuestionsStateProps }) =>
+         state.QuestionsState.currentQuestionData
    )
    const currentQDataIndex = useSelector(
-      (state: { QA: QAStateAndActions }) => state.QA.currentQDataIndex
+      (state: { QuestionsState: QuestionsStateProps }) =>
+         state.QuestionsState.currentQDataIndex
    )
    //TODO:Why does this cause a bug on answer click?
    // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
    // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
 
-   let answers;
+   let answers
    if (!isObjectEmpty(currentQuestionData)) {
       answers = getShuffledArrayElements([
          ...currentQuestionData?.incorrect_answers,

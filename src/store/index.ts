@@ -1,11 +1,13 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
-import QAStore from './QAStateAndActions'
-import QuizSetupStore from './QuizSetup'
+import { configureStore } from '@reduxjs/toolkit'
+import QuestionsSlice from './QuestionsController'
+import AnswersSlice from './AnswersController'
+import QuizSetupSlice from './QuizSetupController'
 
 const store = configureStore({
    reducer: {
-      QA: QAStore.reducer,
-      QuizSetup: QuizSetupStore.reducer,
+      QuestionsState: QuestionsSlice.reducer,
+      AnswersState: AnswersSlice.reducer,
+      QuizSetupState: QuizSetupSlice.reducer,
    },
 })
 
