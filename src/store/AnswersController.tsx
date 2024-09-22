@@ -1,5 +1,5 @@
 // store/index.ts
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { QuestionData } from '../api/getQuestions'
 
 export interface AnswerStateProps {
@@ -22,8 +22,11 @@ const AnswersSlice = createSlice({
    name: 'AnswersController',
    initialState,
    reducers: {
-      setUserAnswer: (state, action) => {
-         state.userAnswer = action.payload
+      setUserAnswer: (
+         state,
+         action: PayloadAction<{ qIndex?: number; userAnswer: string }>
+      ) => {
+         state.userAnswer = action.payload.userAnswer
       },
       setAnswerClicked: (state, action) => {
          state.answerClicked = action.payload

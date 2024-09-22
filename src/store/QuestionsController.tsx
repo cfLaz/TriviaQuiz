@@ -1,6 +1,7 @@
 // store/index.ts
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import { QuestionData } from '../api/getQuestions'
+import { setUserAnswer } from './AnswersController'
 
 export interface QuestionsStateProps {
    allQuestionsData: QuestionData[]
@@ -43,6 +44,13 @@ const QuestionsSlice = createSlice({
       setQuestionExpired: (state, action) => {
          state.questionExpired = action.payload
       },
+   },
+   extraReducers: (builder) => {
+      builder.addCase(setUserAnswer, (state, action) => {
+         const { qIndex, userAnswer } = action.payload
+         if (!qIndex) return
+         state.allQuestionsData[qIndex].userAnswer = userAnswer
+      })
    },
 })
 

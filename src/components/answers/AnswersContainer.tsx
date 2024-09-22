@@ -10,14 +10,10 @@ import { setUserAnswer } from '../../store/AnswersController'
 const AnswersContainer = () => {
    const dispatch = useDispatch()
 
-   const currentQuestionData = useSelector(
-      (state: { QuestionsState: QuestionsStateProps }) =>
-         state.QuestionsState.currentQuestionData
+   const { currentQuestionData, currentQDataIndex } = useSelector(
+      (state: { QuestionsState: QuestionsStateProps }) => state.QuestionsState
    )
-   const currentQDataIndex = useSelector(
-      (state: { QuestionsState: QuestionsStateProps }) =>
-         state.QuestionsState.currentQDataIndex
-   )
+
    //TODO:Why does this cause a bug on answer click?
    // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
    // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
@@ -31,7 +27,7 @@ const AnswersContainer = () => {
    }
 
    useEffect(() => {
-      dispatch(setUserAnswer(''))
+      dispatch(setUserAnswer({ userAnswer: '' }))
    }, [currentQDataIndex])
 
    return (

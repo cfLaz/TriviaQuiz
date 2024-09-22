@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AnswerStateProps } from '../../store/AnswersController'
 import {
+   AnswerStateProps,
    setAnswerClicked,
    setTimerId,
    setUserAnswer,
 } from '../../store/AnswersController'
+import { QuestionsStateProps } from '../../store/QuestionsController'
 import { deriveClasses } from '../../util/deriveClasses'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
-import { QuestionsStateProps } from '../../store/QuestionsController'
 
 interface AnswerProps {
    num: number
@@ -20,7 +20,7 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
    const dispatch = useDispatch()
    const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
       state.QuestionsState
-   const { questionExpired } = useSelector(QuestionsSelector)
+   const { questionExpired, currentQDataIndex } = useSelector(QuestionsSelector)
 
    const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
       state.AnswersState
@@ -37,7 +37,9 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
       }, 1000)
       setTimeout(() => {
          dispatch(setAnswerClicked(false))
-         dispatch(setUserAnswer(text))
+         dispatch(
+            setUserAnswer({ qIndex: currentQDataIndex, userAnswer: text })
+         )
          setClickedAnswerKey(0)
       }, 2000)
    }
