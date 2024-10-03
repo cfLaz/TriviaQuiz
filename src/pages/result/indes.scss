@@ -1,0 +1,9 @@
+#resultTable {
+    padding: 4 * $main-layout-size-unit;
+    background-color: magenta;
+
+    table, thead, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+}
