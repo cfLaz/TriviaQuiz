@@ -1,5 +1,5 @@
 // store/index.ts
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { QuestionData } from '../api/getQuestions'
 import { setUserAnswer } from './AnswersController'
 
@@ -37,7 +37,6 @@ const QuestionsSlice = createSlice({
       setCurrentQDataIndex: (state, action) => {
          state.currentQDataIndex = action.payload
       },
-
       setQuestionStarted: (state, action) => {
          state.questionStarted = action.payload
       },
@@ -51,6 +50,17 @@ const QuestionsSlice = createSlice({
          if (!qIndex) return
          state.allQuestionsData[qIndex].userAnswer = userAnswer
       })
+      // .addCase(
+      //    setCurrentAnswersOrder,
+      //    (state, action: PayloadAction<SetCurrentAnswersOrderProps>) => {
+      //       const { answers, currentQDataIndex } = action.payload
+      //
+      //       console.log('---setCurrentAnswersOrder extra reducer')
+      //       state.allQuestionsData[currentQDataIndex].answersOrder = [
+      //          ...answers,
+      //       ]
+      //    }
+      // )
    },
 })
 

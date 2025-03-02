@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { deriveClasses } from '../../../util/deriveClasses'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { deriveClasses } from '../../../util/deriveClasses'
 
 interface WheelPickerProps {
    segments: string[]

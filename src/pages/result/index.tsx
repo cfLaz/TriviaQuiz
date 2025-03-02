@@ -1,22 +1,22 @@
-import { useSelector } from 'react-redux'
-import { QuestionsStateProps } from '../../store/QuestionsController'
-import { ResultHeader, ResultRow } from './ResultRow'
+import { shallowEqual, useSelector } from 'react-redux'
 import finishedQuizData from './finishedQuizData'
-import { QuestionData } from '../../api/getQuestions'
+import { ResultHeader, ResultRow } from './resultTableComponents'
+import { QuestionsStateProps } from '../../store/QuestionsController'
 
 const Result = () => {
-   //    const { allQuestionsData } = useSelector(
-   //       (state: { QuestionsState: QuestionsStateProps }) => state.QuestionsState
-   //    )
-
-   const allQuestionsData = finishedQuizData() as any
+   const allQuestionsData = useSelector(
+      (state: { QuestionsState: QuestionsStateProps }) =>
+         state.QuestionsState.allQuestionsData,
+      shallowEqual
+   )
+   // const allQuestionsData = finishedQuizData() as any
    return (
       <div id='resultTable'>
          <table>
             <ResultHeader />
             <tbody>
-               {allQuestionsData.map((qd: any) => (
-                  <ResultRow data={qd} />
+               {allQuestionsData.map((qd: any, index: number) => (
+                  <ResultRow data={qd} questionNum={index} />
                ))}
             </tbody>
 

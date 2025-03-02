@@ -13,6 +13,7 @@ export interface QuestionData {
    incorrect_answers: string[]
    //added
    userAnswer: string
+   answersOrder: string[]
 }
 interface GetQuestionsParams {
    difficulty?: Difficulty

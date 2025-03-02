@@ -1,33 +1,46 @@
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { QuestionsStateProps } from '../../store/QuestionsController'
+import { setUserAnswer } from '../../store/AnswersController'
+import {
+   QuestionsStateProps,
+   setAllQuestionsData,
+} from '../../store/QuestionsController'
 import { Classes } from '../../util/Classes'
-import { getShuffledArrayElements } from '../../util/arrays'
 import { isObjectEmpty } from '../../util/object'
 import { Answer } from './Answer'
-import { useEffect } from 'react'
-import { setUserAnswer } from '../../store/AnswersController'
+import { getShuffledArrayElements } from '../../util/arrays'
 
 const AnswersContainer = () => {
+   let [answers, setAnswers] = useState<string[]>([])
+
    const dispatch = useDispatch()
 
-   const { currentQuestionData, currentQDataIndex } = useSelector(
-      (state: { QuestionsState: QuestionsStateProps }) => state.QuestionsState
-   )
+   const { allQuestionsData, currentQuestionData, currentQDataIndex } =
+      useSelector(
+         (state: { QuestionsState: QuestionsStateProps }) =>
+            state.QuestionsState
+      )
 
-   //TODO:Why does this cause a bug on answer click?
+   //to investigate: Why does this cause a bug on answer click?
    // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
    // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
 
-   let answers
-   if (!isObjectEmpty(currentQuestionData)) {
-      answers = getShuffledArrayElements([
-         ...currentQuestionData?.incorrect_answers,
-         currentQuestionData?.correct_answer,
-      ])
-   }
-
    useEffect(() => {
       dispatch(setUserAnswer({ userAnswer: '' }))
+
+      if (!isObjectEmpty(currentQuestionData)) {
+         setAnswers(
+            getShuffledArrayElements([
+               ...currentQuestionData?.incorrect_answers,
+               currentQuestionData?.correct_answer,
+            ])
+         )
+
+         // let updatedAllQuestionsData = structuredClone(allQuestionsData)
+         // //so this should work
+         // updatedAllQuestionsData[currentQDataIndex].answersOrder = answers
+         // dispatch(setAllQuestionsData(updatedAllQuestionsData))
+      }
    }, [currentQDataIndex])
 
    return (

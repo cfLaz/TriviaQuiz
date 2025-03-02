@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getCategories } from '../../api/getQuestions'
@@ -22,14 +22,13 @@ const QuestionBox = () => {
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
+
    const QuizSetup = (state: { QuizSetupState: QuizSetupProps }) =>
       state.QuizSetupState
    const { selectedDifficulty, selectedCategory } = useSelector(QuizSetup)
 
    const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
       state.QuestionsState
-   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
-      state.AnswersState
    const {
       allQuestionsData,
       currentQuestionData,
@@ -38,59 +37,50 @@ const QuestionBox = () => {
       questionExpired,
    } = useSelector(QuestionsSelector)
 
+   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
+      state.AnswersState
    const { answerClicked, userAnswer, timerId } = useSelector(AnswersSelector)
 
    useEffect(() => {
       setupQuiz()
-      return () => {
-         dispatch(setAllQuestionsData({}))
-      }
+      // return () => { // handle going back to quiz setup, but not like this
+      //    dispatch(setAllQuestionsData({}))
+      // }
    }, [])
 
    async function setupQuiz() {
-      let result = await getCategories()
-      const categories = setupCategories(result)
+      try {
+         let result = await getCategories()
+         const categories = setupCategories(result)
 
-      const questions = await setupQuestions({
-         categories,
-         selectedCategory,
-         selectedDifficulty,
-      })
-      if (questions?.length) {
-         dispatch(setAllQuestionsData(questions))
-         dispatch(setCurrentQuestionData(questions[0]))
-         dispatch(setCurrentQDataIndex(0))
-         dispatch(setQuestionStarted(true))
+         const questions = await setupQuestions({
+            categories,
+            selectedCategory,
+            selectedDifficulty,
+         })
+         if (questions?.length) {
+            dispatch(setAllQuestionsData(questions))
+            dispatch(setCurrentQuestionData(questions[0]))
+            dispatch(setCurrentQDataIndex(0))
+            dispatch(setQuestionStarted(true))
+         }
+      } catch (error) {
+         console.log(error)
+         alert(error)
       }
    }
 
    useEffect(() => {
-      if (questionStarted && !userAnswer && !answerClicked) {
-         dispatch(
-            setTimerId(
-               setTimeout(() => {
-                  {
-                     questionExpiredSoundEffect.current.play()
-                     dispatch(setQuestionExpired(true))
-                     dispatch(setQuestionStarted(false))
-                  }
-               }, 15000)
-            )
-         )
+      if (userAnswer) {
+         SetupNextQuestion()
+      } else if (questionExpired) {
+         setTimeout(() => SetupNextQuestion(), 1000)
       }
-      return () => {
-         dispatch(setTimerId(clearTimeout(timerId)))
-      }
-   }, [currentQDataIndex, dispatch])
-
-   if (userAnswer) {
-      SetupNextQuestion()
-   } else if (questionExpired) {
-      setTimeout(() => SetupNextQuestion(), 1000)
-   }
+   }, [userAnswer, questionExpired])
 
    function SetupNextQuestion() {
       if (currentQDataIndex == 14) {
+         //this is also triggered once
          return navigate('/result')
       }
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
@@ -99,14 +89,25 @@ const QuestionBox = () => {
       dispatch(setQuestionStarted(true))
    }
 
+   const handleQuestionExpired = useCallback(
+      (isExpired: true) => {
+         if (answerClicked || userAnswer) {
+            questionExpiredSoundEffect.current.play()
+            dispatch(setQuestionExpired(isExpired))
+            dispatch(setQuestionStarted(false))
+         }
+      },
+      [dispatch]
+   )
+
    return (
       <>
          <div className='question-box'>
             <div className='question'>
-               {allQuestionsData?.length === 0 ? (
-                  <div>Loading...</div>
-               ) : (
+               {allQuestionsData?.length ? (
                   currentQuestionData?.question
+               ) : (
+                  <div>Loading...</div>
                )}
             </div>
 
@@ -114,6 +115,7 @@ const QuestionBox = () => {
                <AnimatedRectangleTimer
                   resetDependancy={currentQuestionData}
                   pauseOn={!!answerClicked}
+                  handleQuestionExpired={handleQuestionExpired}
                />
             )}
 

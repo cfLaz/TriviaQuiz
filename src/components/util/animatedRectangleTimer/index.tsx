@@ -11,6 +11,7 @@ interface AnimatedRectangleTimerProps {
    resetDependancy?: any
    pauseOn?: boolean
    onAnimationEnd?: (isEnded: boolean) => void
+   handleQuestionExpired: (isExpired: true) => void
 }
 
 export function AnimatedRectangleTimer({
@@ -63,16 +64,18 @@ export function AnimatedRectangleTimer({
             targets: pathRef.current,
             strokeDashoffset: 0,
             easing: 'easeInOutSine',
-            duration: 16500,
+            duration: 15000,
             loop: false,
-            // complete: () => {},
+            complete: () => {
+               props.handleQuestionExpired(true)
+            },
          })
       }
    }, [props.targetElementClass, props.resetDependancy])
 
    // useEffect(() => {
    //    if (props.pauseOn && animationRef.current) {
-   //       debugger
+   //
    //       animationRef.current.pause()
    //    }
    // }, [props.pauseOn])
