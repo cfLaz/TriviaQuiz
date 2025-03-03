@@ -5,11 +5,16 @@ export const ResultHeader = () => (
    //maybe it's better to have 4 answers, green for correct one, red for wrong one
    //
    <thead>
-      <td>#</td>
-      <td>Question</td>
-      <td colSpan={4}>Answers</td>
-      <td>Difficulty</td>
-      <td>Type</td>
+      <tr>
+         <th rowSpan={2}>#</th>
+         <th rowSpan={2}>Question</th>
+         <th colSpan={4}>Answers</th>
+         <th rowSpan={2}>Difficulty</th>
+      </tr>
+      <tr>
+         <th>Correct</th>
+         <th colSpan={3}>Incorrect</th>
+      </tr>
    </thead>
 )
 
@@ -20,14 +25,15 @@ interface RowProps {
 export const ResultRow = ({ data, questionNum }: RowProps) => {
    return (
       <tr>
-         <td>{questionNum}</td>
-         <td>{data.question}</td>
+         <td>{questionNum + 1}</td>
+         <td className='question'>{data.question}</td>
+         <td>{data.correct_answer}</td>
+         {data.type == 'multiple' ? (
+            data.incorrect_answers.map((ia) => <td>{ia}</td>)
+         ) : (
+            <td colSpan={3}>{data.incorrect_answers[0]}</td>
+         )}
          <td>{data.difficulty}</td>
-         <td>{data.type}</td>
-         <td>{data.userAnswer}</td>
-         <td>{data.type}</td>
-         <td>{data.difficulty}</td>
-         <td>{data.type}</td>
       </tr>
    )
 }

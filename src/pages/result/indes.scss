@@ -2,8 +2,13 @@
     padding: 4 * $main-layout-size-unit;
     background-color: magenta;
 
-    table, thead, td {
+    table, thead, th, td {
         border: 1px solid black;
         border-collapse: collapse;
+        padding: 2px;
+        text-align: center;
     }
+    .question {
+        text-align: left
+    };
 }
