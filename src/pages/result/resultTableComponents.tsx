@@ -1,4 +1,5 @@
 import { QuestionData } from '../../api/getQuestions'
+import { deriveClasses } from '../../util/deriveClasses'
 
 export const ResultHeader = () => (
    //should it be a column for correct answer or not?
@@ -27,11 +28,32 @@ export const ResultRow = ({ data, questionNum }: RowProps) => {
       <tr>
          <td>{questionNum + 1}</td>
          <td className='question'>{data.question}</td>
-         <td>{data.correct_answer}</td>
+         <td
+            className={deriveClasses({
+               green: data.correct_answer == data?.userAnswer,
+            })}
+         >
+            {data.correct_answer}
+         </td>
          {data.type == 'multiple' ? (
-            data.incorrect_answers.map((ia) => <td>{ia}</td>)
+            data.incorrect_answers.map((ia) => (
+               <td
+                  className={deriveClasses({
+                     red: ia == data?.userAnswer,
+                  })}
+               >
+                  {ia}
+               </td>
+            ))
          ) : (
-            <td colSpan={3}>{data.incorrect_answers[0]}</td>
+            <td
+               colSpan={3}
+               className={deriveClasses({
+                  red: data.incorrect_answers[0] == data?.userAnswer,
+               })}
+            >
+               {data.incorrect_answers[0]}
+            </td>
          )}
          <td>{data.difficulty}</td>
       </tr>

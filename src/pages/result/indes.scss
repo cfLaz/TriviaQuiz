@@ -1,14 +1,24 @@
-#resultTable {
+#resultPage {
     padding: 4 * $main-layout-size-unit;
-    background-color: magenta;
+    background-color: $color-main-bg;
+    color: white;
 
     table, thead, th, td {
-        border: 1px solid black;
+        border: 1px dashed $color-accent;
         border-collapse: collapse;
         padding: 2px;
         text-align: center;
     }
+    th {
+        font-weight: normal;
+    }
     .question {
         text-align: left
     };
+    .green {
+        background: radial-gradient(circle, green 0%, rgba(0, 255, 0, 0.1) 80%);
+    }
+    .red {
+        background: radial-gradient(circle, rgb(179, 7, 7) 0%, rgba(255, 0, 0, 0.1) 80%);
+    }
 }

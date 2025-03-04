@@ -11,7 +11,7 @@ const Result = () => {
    )
    // const allQuestionsData = finishedQuizData() as any
    return (
-      <div id='resultTable'>
+      <div id='resultPage'>
          <table>
             <ResultHeader />
             <tbody>
