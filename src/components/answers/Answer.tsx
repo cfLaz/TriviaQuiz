@@ -26,11 +26,11 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
       state.AnswersState
    const { answerClicked, timerId } = useSelector(AnswersSelector)
 
-   const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0)
+   const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0) //used just for styling
 
    function answerClick(key: number) {
       dispatch(setTimerId(clearTimeout(timerId)))
-      setAnswerClicked(true)
+      dispatch(setAnswerClicked(true))
       setTimeout(() => {
          setClickedAnswerKey(key)
          //need anticipation sound in this step

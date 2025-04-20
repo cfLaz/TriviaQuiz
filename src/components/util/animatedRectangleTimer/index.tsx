@@ -1,22 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
 import anime from 'animejs/lib/anime.es.js'
+import { useSelector } from 'react-redux'
+import { QuestionsStateProps } from '../../../store/QuestionsController'
+import { AnswerStateProps } from '../../../store/AnswersController'
 
 interface AnimatedRectangleTimerProps {
+   currentQuestionIndex: number
    targetElementClass?: string
    width?: number
    height?: number
    borderRadius?: number
    duration?: number
    color?: string
-   resetDependancy?: any
    pauseOn?: boolean
    onAnimationEnd?: (isEnded: boolean) => void
-   handleQuestionExpired: (isExpired: true) => void
+   handleQuestionExpired: () => void
 }
 
 export function AnimatedRectangleTimer({
+   currentQuestionIndex,
+   handleQuestionExpired,
    ...props
 }: AnimatedRectangleTimerProps) {
+   const questionCounter = useRef(-1)
    const svgRef = useRef<SVGSVGElement | null>(null)
    const pathRef = useRef<SVGPathElement | null>(null)
 
@@ -66,16 +72,22 @@ export function AnimatedRectangleTimer({
             easing: 'easeInOutSine',
             duration: 15000,
             loop: false,
+            begin: () => {
+               questionCounter.current += 1
+            },
             complete: () => {
-               props.handleQuestionExpired(true)
+               if (currentQuestionIndex == questionCounter.current) {
+                  handleQuestionExpired()
+               }
             },
          })
       }
-   }, [props.targetElementClass, props.resetDependancy])
+   }, [currentQuestionIndex])
 
+   // maybe implement this later?
    // useEffect(() => {
    //    if (props.pauseOn && animationRef.current) {
-   //
+
    //       animationRef.current.pause()
    //    }
    // }, [props.pauseOn])

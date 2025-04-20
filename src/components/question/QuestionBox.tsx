@@ -18,10 +18,11 @@ import { setupCategories, setupQuestions } from './util'
 import { QuizSetupProps } from '../../store/QuizSetupController'
 
 const QuestionBox = () => {
-   const questionExpiredSoundEffect = useRef(new Audio(question_expired))
-
-   const dispatch = useDispatch()
    const navigate = useNavigate()
+   const dispatch = useDispatch()
+
+   const [quizStarted, setQuizStarted] = useState(false)
+   const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const QuizSetup = (state: { QuizSetupState: QuizSetupProps }) =>
       state.QuizSetupState
@@ -41,12 +42,38 @@ const QuestionBox = () => {
       state.AnswersState
    const { answerClicked, userAnswer, timerId } = useSelector(AnswersSelector)
 
+   const answerClickedRef = useRef(answerClicked)
+   const userAnswerRef = useRef(userAnswer)
    useEffect(() => {
       setupQuiz()
       // return () => { // handle going back to quiz setup, but not like this
       //    dispatch(setAllQuestionsData({}))
       // }
    }, [])
+
+   useEffect(() => {
+      answerClickedRef.current = answerClicked
+   }, [answerClicked])
+
+   useEffect(() => {
+      userAnswerRef.current = userAnswer
+   }, [userAnswer])
+
+   useEffect(() => {
+      answerClickedRef.current = answerClicked
+   }, [answerClicked])
+
+   useEffect(() => {
+      userAnswerRef.current = userAnswer
+   }, [userAnswer])
+
+   useEffect(() => {
+      if (userAnswer) {
+         SetupNextQuestion()
+      } else if (questionExpired) {
+         setTimeout(() => SetupNextQuestion(), 1000)
+      }
+   }, [userAnswer, questionExpired])
 
    async function setupQuiz() {
       try {
@@ -63,20 +90,14 @@ const QuestionBox = () => {
             dispatch(setCurrentQuestionData(questions[0]))
             dispatch(setCurrentQDataIndex(0))
             dispatch(setQuestionStarted(true))
+
+            setQuizStarted(true)
          }
       } catch (error) {
          console.log(error)
          alert(error)
       }
    }
-
-   useEffect(() => {
-      if (userAnswer) {
-         SetupNextQuestion()
-      } else if (questionExpired) {
-         setTimeout(() => SetupNextQuestion(), 1000)
-      }
-   }, [userAnswer, questionExpired])
 
    function SetupNextQuestion() {
       if (currentQDataIndex == 14) {
@@ -89,16 +110,13 @@ const QuestionBox = () => {
       dispatch(setQuestionStarted(true))
    }
 
-   const handleQuestionExpired = useCallback(
-      (isExpired: true) => {
-         if (answerClicked || userAnswer) {
+   const handleQuestionExpired = useCallback(() => {
+      if (!answerClickedRef.current && !userAnswerRef.current) {
             questionExpiredSoundEffect.current.play()
-            dispatch(setQuestionExpired(isExpired))
+         dispatch(setQuestionExpired(true))
             dispatch(setQuestionStarted(false))
          }
-      },
-      [dispatch]
-   )
+   }, [dispatch])
 
    return (
       <>
@@ -111,10 +129,9 @@ const QuestionBox = () => {
                )}
             </div>
 
-            {questionStarted && (
+            {quizStarted && (
                <AnimatedRectangleTimer
-                  resetDependancy={currentQuestionData}
-                  pauseOn={!!answerClicked}
+                  currentQuestionIndex={currentQDataIndex}
                   handleQuestionExpired={handleQuestionExpired}
                />
             )}

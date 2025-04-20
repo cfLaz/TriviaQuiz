@@ -21,13 +21,13 @@ const AnswersContainer = () => {
             state.QuestionsState
       )
 
+
    //to investigate: Why does this cause a bug on answer click?
    // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
    // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
 
    useEffect(() => {
-      dispatch(setUserAnswer({ userAnswer: '' }))
-
+      dispatch(setUserAnswer({ userAnswer: '' })) 
       if (!isObjectEmpty(currentQuestionData)) {
          setAnswers(
             getShuffledArrayElements([
@@ -46,11 +46,11 @@ const AnswersContainer = () => {
    return (
       <div className={Classes.answersContainer}>
          {answers
-            ? answers.map((a, index) => (
+            ? answers.map((answer, index) => (
                  <Answer
                     num={index + 1}
-                    text={a}
-                    isCorrect={currentQuestionData.correct_answer == a}
+                    text={answer}
+                    isCorrect={currentQuestionData.correct_answer == answer}
                  />
               ))
             : 'Loading...'}
