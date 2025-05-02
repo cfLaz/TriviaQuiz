@@ -2,5 +2,7 @@
     display: inline-block;
     padding: $main-layout-size-unit / 2 $main-layout-size-unit;
     border-radius: 25px;
-    background: radial-gradient(circle, rgba(207, 114, 33, 1) 0%, rgba(207, 114, 33, 0) 100%);
+    background: radial-gradient(circle, rgba(207, 114, 33, 0.8) 0%, rgba(207, 114, 33, 0) 100%);
+    border-left: 1px dashed white;
+    border-right: 1px dashed white;
 }
