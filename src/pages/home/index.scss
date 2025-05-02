@@ -11,7 +11,7 @@
 .homepage {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to bottom, #033753, #e67513);
+  background: linear-gradient(to bottom, $color-main-bg 50%, #033753 90%, #e67513);
   position: relative;
   overflow: hidden;
   color: whitesmoke;
