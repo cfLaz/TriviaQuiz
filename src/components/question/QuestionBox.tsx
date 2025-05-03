@@ -60,14 +60,6 @@ const QuestionBox = () => {
    }, [userAnswer])
 
    useEffect(() => {
-      answerClickedRef.current = answerClicked
-   }, [answerClicked])
-
-   useEffect(() => {
-      userAnswerRef.current = userAnswer
-   }, [userAnswer])
-
-   useEffect(() => {
       if (userAnswer) {
          SetupNextQuestion()
       } else if (questionExpired) {
