@@ -47,8 +47,9 @@ const QuestionsSlice = createSlice({
    extraReducers: (builder) => {
       builder.addCase(setUserAnswer, (state, action) => {
          const { qIndex, userAnswer } = action.payload
-         if ((qIndex as number) < 0) return
-         state.allQuestionsData[qIndex as number].userAnswer = userAnswer
+         if (qIndex >= 0) {
+            state.allQuestionsData[qIndex].userAnswer = userAnswer
+         }
       })
       // .addCase(
       //    setCurrentAnswersOrder,
