@@ -1,17 +1,7 @@
-// .homepage {
-//     width: 100%;
-//     height: 100vh; 
-//     background: linear-gradient(to bottom, #333333, #000000); 
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//   }
-  
-// App.scss
 .homepage {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to bottom, $color-main-bg 50%, #033753 90%, #e67513);
+  background: linear-gradient(to bottom, $color-main-bg 50%, #033753 98%, #e67513);
   position: relative;
   overflow: hidden;
   color: whitesmoke;
@@ -28,15 +18,6 @@
     transform: translate(-50%, -50%);
   }
 
-  // .cursorLight {
-  //   position: absolute;
-  //   width: 300px;
-  //   height: 300px;
-  //   background: radial-gradient(circle at center, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 50%);
-  //   pointer-events: none;
-  //   transform: translate(-50%, -50%);
-  //   mix-blend-mode: soft-light;
-  // }
 }
 
 .header {
@@ -62,5 +43,40 @@
     flex-direction: column;
     gap: $main-layout-size-unit / 2;
     align-items: center;
+  }
+}
+
+.start-quiz-btn {
+  border: 3px dashed rgba(255, 255, 255, 0.5);
+  border-radius: $border-radius-main + 5px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  display: inline-block; 
+  margin-bottom: 3%;
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0px 25px rgba(255, 255, 255, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 0px 30px rgba(255, 255, 255);
+  }
+
+  > a {
+    all: unset;
+    width: 130px;
+    height: 60px;
+    background: radial-gradient(circle, #326273 20%, rgba(207, 114, 33, 0.8));
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-main;
+    transition: inherit;
+    &:active {
+      transition: none;
+    }
   }
 }

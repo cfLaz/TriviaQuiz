@@ -57,7 +57,7 @@ export default AnswersSlice
 
 ///
 interface SetUserAnswerProps {
-   qIndex: number
+   qIndex?: number
    userAnswer: string
 }
 export interface SetCurrentAnswersOrderProps {
