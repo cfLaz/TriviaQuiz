@@ -49,7 +49,7 @@
 .start-quiz-btn {
   border: 3px dashed rgba(255, 255, 255, 0.5);
   border-radius: $border-radius-main + 5px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: $button-transition;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   display: inline-block; 
   margin-bottom: 3%;

@@ -9,40 +9,31 @@ import {
 import { QuestionsStateProps } from '../../store/QuestionsController'
 import { deriveClasses } from '../../util/deriveClasses'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
+import { AnswerClickProps } from './AnswersContainer'
 
 interface AnswerProps {
    num: number
+   clickedAnswerKey: number
+   onAnswerClickCallback: ({ key, answerText }: AnswerClickProps) => void
    text: string
    isCorrect: boolean
 }
 
-export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
-   const dispatch = useDispatch()
+export const Answer = ({
+   num,
+   clickedAnswerKey,
+   onAnswerClickCallback,
+   text,
+   isCorrect,
+}: AnswerProps) => {
    const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
       state.QuestionsState
-   const { questionExpired, currentQDataIndex } = useSelector(QuestionsSelector)
+   const { questionExpired } = useSelector(QuestionsSelector)
 
    const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
       state.AnswersState
-   const { answerClicked, timerId } = useSelector(AnswersSelector)
+   const { answerClicked } = useSelector(AnswersSelector)
 
-   const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0) //used just for styling
-
-   function answerClick(key: number) {
-      dispatch(setTimerId(clearTimeout(timerId)))
-      dispatch(setAnswerClicked(true))
-      setTimeout(() => {
-         setClickedAnswerKey(key)
-         //need anticipation sound in this step
-      }, 1000)
-      setTimeout(() => {
-         dispatch(setAnswerClicked(false))
-         dispatch(
-            setUserAnswer({ qIndex: currentQDataIndex, userAnswer: text })
-         )
-         setClickedAnswerKey(0)
-      }, 2000)
-   }
    return (
       <>
          <div
@@ -52,9 +43,12 @@ export const Answer = ({ num, text, isCorrect }: AnswerProps) => {
                answer_correct: isCorrect && clickedAnswerKey == num,
                answer_incorrect: !isCorrect && clickedAnswerKey == num,
                answer_expired: questionExpired,
+               answer_disabled:
+                  clickedAnswerKey != 0 && clickedAnswerKey != num,
             })}
             onClick={(e) => {
-               if (!answerClicked && !questionExpired) answerClick(num)
+               if (!answerClicked && !questionExpired)
+                  onAnswerClickCallback({ key: num, answerText: text })
             }}
          >
             <div>{num}</div>
