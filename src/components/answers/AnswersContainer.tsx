@@ -40,16 +40,19 @@ const AnswersContainer = () => {
       state.AnswersState
    const { timerId } = useSelector(AnswersSelector)
 
-   const [clickedAnswerKey, setClickedAnswerKey] = useState<number>(0) //used just for styling
+   const [startClickedAnswerKey, setStartClickedAnswerKey] = useState<number>(0) //used just for styling
+   const [finishClickedAnswerKey, setFinishClickedAnswerKey] =
+      useState<number>(0) //used just for styling
 
    const onAnswerClick = useCallback(
       ({ key, answerText }: AnswerClickProps) => {
          dispatch(setTimerId(clearTimeout(timerId)))
          dispatch(setAnswerClicked(true))
+         setStartClickedAnswerKey(key)
          setTimeout(() => {
-            setClickedAnswerKey(key)
+            setFinishClickedAnswerKey(key)
             //need anticipation sound in this step
-         }, 500)
+         }, 1000)
          setTimeout(() => {
             dispatch(setAnswerClicked(false))
             dispatch(
@@ -58,7 +61,8 @@ const AnswersContainer = () => {
                   userAnswer: answerText,
                })
             )
-            setClickedAnswerKey(0)
+            setStartClickedAnswerKey(0)
+            setFinishClickedAnswerKey(0)
          }, 2000)
       },
       [dispatch, currentQDataIndex]
@@ -70,7 +74,8 @@ const AnswersContainer = () => {
             ? answers.map((answer, index) => (
                  <Answer
                     num={index + 1}
-                    clickedAnswerKey={clickedAnswerKey}
+                    startClickedAnswerKey={startClickedAnswerKey}
+                    finishClickedAnswerKey={finishClickedAnswerKey}
                     onAnswerClickCallback={onAnswerClick}
                     text={answer}
                     isCorrect={currentQuestionData.correct_answer == answer}

@@ -1,11 +1,5 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-   AnswerStateProps,
-   setAnswerClicked,
-   setTimerId,
-   setUserAnswer,
-} from '../../store/AnswersController'
+import { useSelector } from 'react-redux'
+import { AnswerStateProps } from '../../store/AnswersController'
 import { QuestionsStateProps } from '../../store/QuestionsController'
 import { deriveClasses } from '../../util/deriveClasses'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
@@ -13,7 +7,8 @@ import { AnswerClickProps } from './AnswersContainer'
 
 interface AnswerProps {
    num: number
-   clickedAnswerKey: number
+   startClickedAnswerKey: number
+   finishClickedAnswerKey: number
    onAnswerClickCallback: ({ key, answerText }: AnswerClickProps) => void
    text: string
    isCorrect: boolean
@@ -21,7 +16,8 @@ interface AnswerProps {
 
 export const Answer = ({
    num,
-   clickedAnswerKey,
+   startClickedAnswerKey,
+   finishClickedAnswerKey,
    onAnswerClickCallback,
    text,
    isCorrect,
@@ -40,11 +36,11 @@ export const Answer = ({
             key={num}
             className={deriveClasses({
                answer: true,
-               answer_correct: isCorrect && clickedAnswerKey == num,
-               answer_incorrect: !isCorrect && clickedAnswerKey == num,
+               answer_correct: isCorrect && finishClickedAnswerKey == num,
+               answer_incorrect: !isCorrect && finishClickedAnswerKey == num,
                answer_expired: questionExpired,
                answer_disabled:
-                  clickedAnswerKey != 0 && clickedAnswerKey != num,
+                  startClickedAnswerKey != 0 && startClickedAnswerKey != num,
             })}
             onClick={(e) => {
                if (!answerClicked && !questionExpired)
