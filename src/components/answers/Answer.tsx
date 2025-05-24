@@ -1,59 +1,56 @@
+// Answer.tsx
 import { useSelector } from 'react-redux'
-import { AnswerStateProps } from '../../store/AnswersController'
-import { QuestionsStateProps } from '../../store/QuestionsController'
 import { deriveClasses } from '../../util/deriveClasses'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
-import { AnswerClickProps } from './AnswersContainer'
+import { QuestionsStateProps } from '../../store/QuestionsController'
+import { AnswerStateProps } from '../../store/AnswersController'
 
 interface AnswerProps {
    num: number
-   startClickedAnswerKey: number
-   finishClickedAnswerKey: number
-   onAnswerClickCallback: ({ key, answerText }: AnswerClickProps) => void
+   clickedKey: number
+   clickPhase: 'idle' | 'clicked' | 'revealed'
+   onAnswerClickCallback: ({ key }: { key: number }) => void
    text: string
    isCorrect: boolean
 }
 
 export const Answer = ({
    num,
-   startClickedAnswerKey,
-   finishClickedAnswerKey,
+   clickedKey,
+   clickPhase,
    onAnswerClickCallback,
    text,
    isCorrect,
 }: AnswerProps) => {
-   const QuestionsSelector = (state: { QuestionsState: QuestionsStateProps }) =>
-      state.QuestionsState
-   const { questionExpired } = useSelector(QuestionsSelector)
+   const { questionExpired } = useSelector(
+      (state: { QuestionsState: QuestionsStateProps }) => state.QuestionsState
+   )
+   const { answerClicked } = useSelector(
+      (state: { AnswersState: AnswerStateProps }) => state.AnswersState
+   )
 
-   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
-      state.AnswersState
-   const { answerClicked } = useSelector(AnswersSelector)
+   const className = deriveClasses({
+      answer: true,
+      answer_disabled: clickedKey !== 0 && clickedKey !== num,
+      answer_correct:
+         clickPhase === 'revealed' && clickedKey === num && isCorrect,
+      answer_incorrect:
+         clickPhase === 'revealed' && clickedKey === num && !isCorrect,
+      answer_expired: questionExpired,
+   })
 
    return (
-      <>
-         <div
-            key={num}
-            className={deriveClasses({
-               answer: true,
-               answer_correct: isCorrect && finishClickedAnswerKey == num,
-               answer_incorrect: !isCorrect && finishClickedAnswerKey == num,
-               answer_expired: questionExpired,
-               answer_disabled:
-                  startClickedAnswerKey != 0 && startClickedAnswerKey != num,
-            })}
-            onClick={(e) => {
-               if (!answerClicked && !questionExpired)
-                  onAnswerClickCallback({ key: num, answerText: text })
-            }}
-         >
-            <div>{num}</div>
-            <div>{text}</div>
-            {questionExpired && <QuestionExpiredOverlay />}
-         </div>
-      </>
+      <div
+         className={className}
+         onClick={() => {
+            if (!answerClicked && !questionExpired && clickPhase === 'idle') {
+               onAnswerClickCallback({ key: num })
+            }
+         }}
+      >
+         <div>{num}</div>
+         <div>{text}</div>
+         {questionExpired && <QuestionExpiredOverlay />}
+      </div>
    )
 }
-function onCorrectAnimate() {}
-
-function onWrongAnimate() {}

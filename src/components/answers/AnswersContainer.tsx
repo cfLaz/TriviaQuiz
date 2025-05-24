@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-   AnswerStateProps,
-   setAnswerClicked,
-   setTimerId,
-   setUserAnswer,
-} from '../../store/AnswersController'
+import { setAnswerClicked, setUserAnswer } from '../../store/AnswersController'
 import { QuestionsStateProps } from '../../store/QuestionsController'
+import { getShuffledArrayElements } from '../../util/arrays'
 import { Classes } from '../../util/Classes'
 import { isObjectEmpty } from '../../util/object'
 import { Answer } from './Answer'
-import { getShuffledArrayElements } from '../../util/arrays'
+
+type ClickPhase = 'idle' | 'clicked' | 'revealed'
+interface ClickState {
+   key: number
+   phase: ClickPhase
+}
 
 const AnswersContainer = () => {
    let [answers, setAnswers] = useState<string[]>([])
@@ -20,12 +21,15 @@ const AnswersContainer = () => {
       (state: { QuestionsState: QuestionsStateProps }) => state.QuestionsState
    )
 
-   //to investigate: Why does this cause a bug on answer click?
-   // const QASelector = (state: { QA: QAStateAndActions }) => state.QA;
-   // const {currentQuestionData, currentQDataIndex} = useSelector(QASelector);
+   const [clickState, setClickState] = useState<ClickState>({
+      key: 0,
+      phase: 'idle',
+   })
 
    useEffect(() => {
       dispatch(setUserAnswer({ userAnswer: '' }))
+      setClickState({ key: 0, phase: 'idle' })
+
       if (!isObjectEmpty(currentQuestionData)) {
          setAnswers(
             getShuffledArrayElements([
@@ -34,51 +38,53 @@ const AnswersContainer = () => {
             ])
          )
       }
-   }, [currentQDataIndex])
-
-   const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
-      state.AnswersState
-   const { timerId } = useSelector(AnswersSelector)
-
-   const [startClickedAnswerKey, setStartClickedAnswerKey] = useState<number>(0) //used just for styling
-   const [finishClickedAnswerKey, setFinishClickedAnswerKey] =
-      useState<number>(0) //used just for styling
+   }, [currentQDataIndex, currentQuestionData, dispatch])
 
    const onAnswerClick = useCallback(
-      ({ key, answerText }: AnswerClickProps) => {
-         dispatch(setTimerId(clearTimeout(timerId)))
+      ({ key }: { key: number }) => {
+         if (clickState.phase !== 'idle') return
          dispatch(setAnswerClicked(true))
-         setStartClickedAnswerKey(key)
-         setTimeout(() => {
-            setFinishClickedAnswerKey(key)
-            //need anticipation sound in this step
-         }, 1000)
-         setTimeout(() => {
-            dispatch(setAnswerClicked(false))
-            dispatch(
-               setUserAnswer({
-                  qIndex: currentQDataIndex,
-                  userAnswer: answerText,
-               })
-            )
-            setStartClickedAnswerKey(0)
-            setFinishClickedAnswerKey(0)
-         }, 2000)
+
+         setClickState({ key, phase: 'clicked' })
       },
-      [dispatch, currentQDataIndex]
+      [clickState.phase, dispatch]
    )
+
+   useEffect(() => {
+      if (clickState.phase === 'clicked') {
+         setTimeout(() => {
+            setClickState((prev) => ({ key: prev.key, phase: 'revealed' }))
+            // need anticipation sound
+         }, 1000)
+
+         setTimeout(() => {
+            if (clickState.key > 0) {
+               const chosenAnswer = answers[clickState.key - 1]
+               dispatch(setAnswerClicked(false))
+               dispatch(
+                  setUserAnswer({
+                     qIndex: currentQDataIndex,
+                     userAnswer: chosenAnswer,
+                  })
+               )
+            }
+            setClickState({ key: 0, phase: 'idle' })
+         }, 2000)
+      }
+   }, [clickState.phase, clickState.key, answers, currentQDataIndex, dispatch])
 
    return (
       <div className={Classes.answersContainer}>
          {answers
             ? answers.map((answer, index) => (
                  <Answer
+                    key={index + 1}
                     num={index + 1}
-                    startClickedAnswerKey={startClickedAnswerKey}
-                    finishClickedAnswerKey={finishClickedAnswerKey}
+                    clickedKey={clickState.key}
+                    clickPhase={clickState.phase}
                     onAnswerClickCallback={onAnswerClick}
                     text={answer}
-                    isCorrect={currentQuestionData.correct_answer == answer}
+                    isCorrect={currentQuestionData.correct_answer === answer}
                  />
               ))
             : 'Loading...'}
@@ -87,8 +93,3 @@ const AnswersContainer = () => {
 }
 
 export default AnswersContainer
-
-export interface AnswerClickProps {
-   key: number
-   answerText: string
-}
