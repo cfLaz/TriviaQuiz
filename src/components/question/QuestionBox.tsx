@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getCategories } from '../../api/getQuestions'
-import question_expired from '../../assets/sounds/question_expired.wav'
-import { AnswerStateProps, setTimerId } from '../../store/AnswersController'
+import { AnswerStateProps } from '../../store/AnswersController'
 import {
    QuestionsStateProps,
    setAllQuestionsData,
@@ -16,13 +15,13 @@ import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
 import { setupCategories, setupQuestions } from './util'
 import { QuizSetupProps } from '../../store/QuizSetupController'
+import { Sounds } from '../../assets/sounds/Sounds'
 
 const QuestionBox = () => {
    const navigate = useNavigate()
    const dispatch = useDispatch()
 
    const [quizStarted, setQuizStarted] = useState(false)
-   const questionExpiredSoundEffect = useRef(new Audio(question_expired))
 
    const QuizSetup = (state: { QuizSetupState: QuizSetupProps }) =>
       state.QuizSetupState
@@ -92,7 +91,7 @@ const QuestionBox = () => {
    }
 
    function SetupNextQuestion() {
-      if (currentQDataIndex == 14) {
+      if (currentQDataIndex == 2) {
          //this is also triggered once
          return navigate('/result')
       }
@@ -104,10 +103,10 @@ const QuestionBox = () => {
 
    const handleQuestionExpired = useCallback(() => {
       if (!answerClickedRef.current && !userAnswerRef.current) {
-            questionExpiredSoundEffect.current.play()
+         Sounds.question.expired.play()
          dispatch(setQuestionExpired(true))
-            dispatch(setQuestionStarted(false))
-         }
+         dispatch(setQuestionStarted(false))
+      }
    }, [dispatch])
 
    return (

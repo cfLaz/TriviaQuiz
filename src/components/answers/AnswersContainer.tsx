@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAnswerClicked, setUserAnswer } from '../../store/AnswersController'
 import { QuestionsStateProps } from '../../store/QuestionsController'
@@ -6,6 +6,7 @@ import { getShuffledArrayElements } from '../../util/arrays'
 import { Classes } from '../../util/Classes'
 import { isObjectEmpty } from '../../util/object'
 import { Answer } from './Answer'
+import { Sounds } from '../../assets/sounds/Sounds'
 
 type ClickPhase = 'idle' | 'clicked' | 'revealed'
 interface ClickState {
@@ -52,9 +53,9 @@ const AnswersContainer = () => {
 
    useEffect(() => {
       if (clickState.phase === 'clicked') {
+         Sounds.answer.selected.play()
          setTimeout(() => {
             setClickState((prev) => ({ key: prev.key, phase: 'revealed' }))
-            // need anticipation sound
          }, 1000)
 
          setTimeout(() => {
