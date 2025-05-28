@@ -33,21 +33,17 @@ const QuestionBox = () => {
       allQuestionsData,
       currentQuestionData,
       currentQDataIndex,
-      questionStarted,
       questionExpired,
    } = useSelector(QuestionsSelector)
 
    const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
       state.AnswersState
-   const { answerClicked, userAnswer, timerId } = useSelector(AnswersSelector)
+   const { answerClicked, userAnswer } = useSelector(AnswersSelector)
 
    const answerClickedRef = useRef(answerClicked)
    const userAnswerRef = useRef(userAnswer)
    useEffect(() => {
       setupQuiz()
-      // return () => { // handle going back to quiz setup, but not like this
-      //    dispatch(setAllQuestionsData({}))
-      // }
    }, [])
 
    useEffect(() => {
@@ -92,7 +88,6 @@ const QuestionBox = () => {
 
    function SetupNextQuestion() {
       if (currentQDataIndex == 2) {
-         //this is also triggered once
          return navigate('/result')
       }
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
