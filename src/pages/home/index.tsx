@@ -38,7 +38,7 @@ export function Home() {
             </div>
          </div>
          <div className='start-quiz-btn'>
-            <Link to='quiz'>Start the quiz</Link>
+            <Link to='/quiz'>Start the quiz</Link>
          </div>
       </div>
    )
