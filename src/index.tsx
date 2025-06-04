@@ -8,6 +8,7 @@ import {
    useLocation,
 } from 'react-router-dom'
 import './index.scss'
+import './tailwind.css'
 import { Home } from './pages/home'
 import Quiz from './pages/quiz'
 import Result from './pages/result'

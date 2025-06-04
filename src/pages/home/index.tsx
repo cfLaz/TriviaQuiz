@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import testpic from '../../assets/pictures/TriviaQuiz.png'
-import TextContainer from '../../components/util/fancyPantsTextContainer'
+import FancyContainer from '../../components/util/fancyPantsContainer'
 import WheelPicker from '../../components/util/wheelPicker'
 import {
    QuizSetupProps,
@@ -22,18 +22,26 @@ export function Home() {
             <img className='logo' src={testpic}></img>
          </div>
 
-         <TextContainer text='Choose your quiz setup' />
+         <FancyContainer>
+            <span>Choose your quiz setup</span>
+         </FancyContainer>
 
          <div className='pickers-container'>
             <div className='picker'>
-               <p>Difficulty: {selectedDifficulty}</p>
+               <FancyContainer className='flex justify-between gap-2 mb-4'>
+                  <span>Difficulty: </span>
+                  <span>{selectedDifficulty}</span>
+               </FancyContainer>
                <WheelPicker
                   segments={difficulties}
                   storeReducer={setDifficulty}
                />
             </div>
             <div className='picker'>
-               <p>Category: {selectedCategory}</p>
+               <FancyContainer className='flex justify-between gap-2 mb-4'>
+                  <span>Category: </span>
+                  <span>{selectedCategory}</span>
+               </FancyContainer>
                <WheelPicker segments={categories} storeReducer={setCategory} />
             </div>
          </div>
