@@ -28,6 +28,13 @@ export const Answer = ({
    const { answerClicked } = useSelector(
       (state: { AnswersState: AnswerStateProps }) => state.AnswersState
    )
+   
+   let fontSizeClass = 'text-[18px]'
+   if (text.length > 50) {
+      fontSizeClass = 'text-[10px]'
+   } else if (text.length > 30) {
+      fontSizeClass = 'text-[14px]'
+   }
 
    const className = deriveClasses({
       answer: true,
@@ -40,17 +47,19 @@ export const Answer = ({
    })
 
    return (
-      <div
+      <button
          className={className}
          onClick={() => {
             if (!answerClicked && !questionExpired && clickPhase === 'idle') {
                onAnswerClickCallback({ key: num })
             }
          }}
+         title={text}
       >
          <div>{num}</div>
-         <div>{text}</div>
+         <div className={fontSizeClass}>{text}</div>
+
          {questionExpired && <QuestionExpiredOverlay />}
-      </div>
+      </button>
    )
 }

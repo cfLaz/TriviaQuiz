@@ -20,7 +20,7 @@
    text-align: center;
    display: flex;
    justify-content: center;
-   align-items: center;
+   align-items: safe center;
 }
 
 $answer-width: 90%;
@@ -35,7 +35,6 @@ $answer-height: 60px;
    //border: 4px solid $color-accent;
    border-radius: $border-radius-main;
    transition: all .2s ease-in-out;
-   font-size: $font-size-large;
    color: #fff;
 
    &:hover {
@@ -46,10 +45,15 @@ $answer-height: 60px;
       scale: 0.9;
    }
    :first-child {
+      font-size: $font-size-large;
       @include answer-child-style(20%, $color-accent);
    }
    :nth-child(2) {
+      overflow: auto;
+      word-wrap: break-word;
+      line-break: anywhere;  
       @include answer-child-style(80%, $color-primary);
+      padding: 2px;
    }
 
    &_correct {

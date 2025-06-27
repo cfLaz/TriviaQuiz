@@ -16,6 +16,8 @@
 }
 
 .question {
+    position: relative;
+    z-index: 2;
     overflow: auto;
     padding: 5% 10%;
     height: 100%;

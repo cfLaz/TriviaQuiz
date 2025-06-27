@@ -90,6 +90,7 @@ const QuestionBox = () => {
       if (currentQDataIndex == 2) {
          return navigate('/result')
       }
+      console.log('aaa setupnextquestion')
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
       dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       dispatch(setQuestionExpired(false))
@@ -107,6 +108,12 @@ const QuestionBox = () => {
    return (
       <>
          <div className='question-box'>
+            {quizStarted && (
+               <AnimatedRectangleTimer
+                  currentQuestionIndex={currentQDataIndex}
+                  handleQuestionExpired={handleQuestionExpired}
+               />
+            )}
             <div className='question'>
                {allQuestionsData?.length ? (
                   currentQuestionData?.question
@@ -114,14 +121,6 @@ const QuestionBox = () => {
                   <div>Loading...</div>
                )}
             </div>
-
-            {quizStarted && (
-               <AnimatedRectangleTimer
-                  currentQuestionIndex={currentQDataIndex}
-                  handleQuestionExpired={handleQuestionExpired}
-               />
-            )}
-
             {questionExpired && <QuestionExpiredOverlay />}
          </div>
       </>
