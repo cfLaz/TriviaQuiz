@@ -1,5 +1,5 @@
 import { Difficulty, QuestionData, getQuestions } from '../../api/getQuestions'
-import { SelectableCategory, SelectableDifficulty } from '../../pages/home/util'
+import { SelectableCategory, SelectableDifficulty } from '../home/util'
 
 interface CategoryFetched {
    id: number

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getCategories } from '../../api/getQuestions'
-import { setupCategories, setupQuestions } from '../../components/question/util'
+import { setupCategories, setupQuestions } from './util'
 import { AnswerStateProps } from '../../store/AnswersController'
 import {
    QuestionsStateProps,
@@ -40,7 +40,7 @@ function Quiz() {
 
    const AnswersSelector = (state: { AnswersState: AnswerStateProps }) =>
       state.AnswersState
-   const { answerClicked, userAnswer } = useSelector(AnswersSelector)
+   const { userAnswer } = useSelector(AnswersSelector)
 
    useEffect(() => {
       setupQuiz()
@@ -82,7 +82,6 @@ function Quiz() {
       if (currentQDataIndex == 2) {
          return navigate('/result')
       }
-      console.log('aaa setupnextquestion')
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))
       dispatch(setCurrentQDataIndex(currentQDataIndex + 1))
       dispatch(setQuestionExpired(false))
