@@ -51,7 +51,7 @@ $answer-height: 60px;
    :nth-child(2) {
       overflow: auto;
       word-wrap: break-word;
-      line-break: anywhere;  
+      // line-break: anywhere;  
       @include answer-child-style(80%, $color-primary);
       padding: 2px;
    }

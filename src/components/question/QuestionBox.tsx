@@ -9,6 +9,7 @@ import {
 } from '../../store/QuestionsController'
 import { QuestionExpiredOverlay } from '../util/QuestionExpiredOverlay'
 import { AnimatedRectangleTimer } from '../util/animatedRectangleTimer'
+import { QuestionIcon } from './QuestionIcon'
 
 interface QuestionBoxProps {
    quizStarted: boolean
@@ -57,6 +58,9 @@ const QuestionBox = ({
                   handleQuestionExpired={handleQuestionExpired}
                />
             )}
+            <div className='absolute right-[3%] bottom-[4%]'>
+               <QuestionIcon category={currentQuestionData.category} />
+            </div>
             <div className='question'>
                {currentQuestionData?.question || <div>Loading...</div>}
             </div>

@@ -79,7 +79,7 @@ function Quiz() {
    }
 
    function SetupNextQuestion() {
-      if (currentQDataIndex == 2) {
+      if (currentQDataIndex == 14) {
          return navigate('/result')
       }
       dispatch(setCurrentQuestionData(allQuestionsData[currentQDataIndex + 1]))

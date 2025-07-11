@@ -1,4 +1,4 @@
-import { Difficulty, QuestionData, getQuestions } from '../../api/getQuestions'
+import { getQuestions } from '../../api/getQuestions'
 import { SelectableCategory, SelectableDifficulty } from '../home/util'
 
 interface CategoryFetched {
@@ -92,7 +92,7 @@ export async function setupQuestions({
    } catch (error) {
       alert(error)
       console.log(error)
-   }   
+   }
 }
 
 function getThreeRandomIds(IdsArray: Array<number>): Array<number> {
